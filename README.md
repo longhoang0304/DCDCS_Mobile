@@ -49,23 +49,23 @@ yarn global add create-react-native-app react-native-cli
 
 ### Build App
 1. Cloning repository
-```
+```sh
 git clone https://github.com/longhoang0304/DCDCS.git
 ```
 2. Change directory to DCDCS folder
-```
+```sh
 cd DCDCS
 ```
 3. Install packages and dependencies
-```
+```sh
 yarn install
 ```
 4. Start AVD from command line
-```
+```sh
 emulator -avd [your avd name]
 ```
 5. Start React Native app
-```
+```sh
 yarn run android
 ```
 ## Acknowledge
