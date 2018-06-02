@@ -35,5 +35,38 @@ This system is suitable for family members staying apartments due to limited spa
 - LCD5110 - Display information
 - ESP8266 - Wifi module
 
+## Installation
+### Requirement
+- NodeJS 10.0.3
+- Yarn Package Manager 1.7.0
+- Android SDK & AVD
+- Git-scm
+
+### Setup React Native
+```
+yarn global add create-react-native-app react-native-cli
+```
+
+### Build App
+1. Cloning repository
+```
+git clone https://github.com/longhoang0304/DCDCS.git
+```
+2. Change directory to DCDCS folder
+```
+cd DCDCS
+```
+3. Install packages and dependencies
+```
+yarn install
+```
+4. Start AVD from command line
+```
+emulator -avd [your avd name]
+```
+5. Start React Native app
+```
+yarn run android
+```
 ## Acknowledge
 This Github repository only contains Android application part of the capstone project. Further source code will be available later.
