@@ -1,82 +1,52 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {Text, View, ImageBackground} from 'react-native';
 import {RkButton, RkText} from 'react-native-ui-kitten';
-// import LinearGradient from 'react-native-linear-gradient';
+import {StackNavigator} from 'react-navigation';
+import {InfoButton, PrimaryButton} from '../components/Button';
+import {Font} from 'expo';
+import styles from './styles';
 
 class Welcome extends Component {
+  state = {
+    isFontLoaded: false
+  }
+
+  async componentWillMount() {
+    await Font.loadAsync({
+      'gentona-bold': require('../assets/fonts/Gentona_Bold.otf'),
+    });
+    this.setState({isFontLoaded: true});
+  }
+
   render() {
+    const {isFontLoaded} = this.state;
+    const Gentona_Bold = {
+      fontFamily: 'gentona-bold'
+    };
+    const titleStyle = [styles.appTitle];
+    isFontLoaded && titleStyle.push(Gentona_Bold);
+    const {navigation} = this.props;
+
     return (
-      <ImageBackground style={styles.imgContainer} source={require("../assets/images/welcome.jpg")}>
-        <View style={[styles.container, styles.flexBox]}>
-            <RkText rkType='large' style={styles.appTitle}>
-              DCDCS
+      <ImageBackground style={styles.fullscreen} source={require("../assets/images/welcome.jpg")}>
+        <View style={[ styles.fullscreen, styles.flexBox]}>
+          <View style={styles.appTitleContainer}>
+            <RkText style={titleStyle}>
+              CAPSTONE{'\n'}PROJECT
             </RkText>
+          </View>
           <View style={styles.buttonGroup}>
-            <RkButton style={[styles.btn, styles.buttonLogin]}>
-              <Text style={styles.txt}>
-                LOG IN
-              </Text>
-            </RkButton>
-            <RkButton style={[styles.buttonHelp, styles.btn]}>
-              <Text style={[styles.txt, styles.txtHelp]}>
-                HELP
-              </Text>
-            </RkButton>
+            <PrimaryButton fullWidth>
+              LOG IN
+            </PrimaryButton>
+            <InfoButton fullWidth onPress={() => navigation.navigate('Help')}>
+              INFORMATION
+            </InfoButton>
           </View>
         </View>
       </ImageBackground>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  flexBox: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center',
-    marginLeft: '5%',
-    marginRight: '5%'
-  },
-  imgContainer: {
-    width: '100%',
-    height:' 100%'
-  },
-  container: {
-
-  },
-  buttonGroup: {
-    // flexDirection: 'row'
-  },
-  btn: {
-    width: '100%',
-    borderRadius: 50,
-  },
-  txt: {
-    width: '100%',
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 16
-  },
-  buttonLogin: {
-    backgroundColor: 'rgba(30, 161, 255, 0.6)'
-  },
-  buttonHelp: {
-    marginTop: 15,
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    borderWidth: 2,
-    borderColor: '#fff'
-  },
-  txtHelp: {
-    color: '#fff',
-  },
-  appTitle: {
-    width: '100%',
-    fontSize: 64,
-    marginBottom: 50,
-    textAlign: 'center',
-    color: 'rgba(255, 255, 255, 1)'
-  }
-});
-
 
 export default Welcome;

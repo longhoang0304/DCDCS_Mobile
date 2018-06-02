@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Welcome from './screens/Welcome';
+import {WelcomeStack} from './config/routes';
 
 class App extends Component {
   render() {
     return (
-      <Welcome />
+      <WelcomeStack />
     );
   }
 }
