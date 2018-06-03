@@ -10,17 +10,28 @@ export default StyleSheet.create({
   txtInfo: {
     color: '#fff',
   },
+  txtLink: {
+    color: '#fff',
+    textDecorationLine: 'underline'
+  },
   btnFullWidth: {
     width: '100%',
-    borderRadius: 50,
+  },
+  btnRounded: {
+    borderRadius: 100,
   },
   buttonInfo: {
-    marginTop: 15,
     backgroundColor: 'rgba(0, 0, 0, 0)',
     borderWidth: 2,
     borderColor: '#fff'
   },
   buttonPrimary: {
     backgroundColor: 'rgba(30, 161, 255, 0.6)'
+  },
+  buttonLink: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    borderWidth: 0,
+    height: '125%',
+    alignSelf: 'flex-end'
   }
 });
