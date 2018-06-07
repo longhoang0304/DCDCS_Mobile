@@ -35,7 +35,7 @@ class Welcome extends Component {
             </RkText>
           </View>
           <View style={styles.buttonGroup}>
-            <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('Login')}>
+            <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('LoginScreen')}>
               LOGIN
             </PrimaryButton>
             <InfoButton fullWidth rounded marginTop={15} onPress={() => navigation.navigate('Help')}>

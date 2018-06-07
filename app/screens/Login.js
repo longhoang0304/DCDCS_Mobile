@@ -55,7 +55,7 @@ class Login extends Component {
             />
           </View>
           <View style={styles.buttonGroup}>
-            <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('Login')}>
+            <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('HomeStack')}>
               LOGIN
             </PrimaryButton>
             <LinkButton fullWidth rounded marginTop={15} onPress={() => navigation.navigate('Help')}>
