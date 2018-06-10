@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
   },
   helpHeader: {
     width: '100%',
-    height: 150,
+    height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.7)'
   },
   headerText: {
@@ -44,6 +44,26 @@ export default styles = StyleSheet.create({
     width: '100%'
   },
   helpImg: {
-    height: 150
+    height: 250
+  },
+  inputGroup: {
+    width: '90%',
+  },
+  inputBlock: { 
+    height: 50,
+  },
+  inputEle: {
+    color: '#fff',
+  },
+  labelEle: {
+    color: '#fff'
+  },
+  buttonLoginGroup: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+    width: '90%',
+    marginTop: 10,
   }
 });

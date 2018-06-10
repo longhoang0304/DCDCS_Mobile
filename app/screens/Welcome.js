@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, ImageBackground} from 'react-native';
 import {RkButton, RkText} from 'react-native-ui-kitten';
-import {StackNavigator} from 'react-navigation';
 import {InfoButton, PrimaryButton} from '../components/Button';
 import {Font} from 'expo';
 import styles from './styles';
@@ -36,10 +35,10 @@ class Welcome extends Component {
             </RkText>
           </View>
           <View style={styles.buttonGroup}>
-            <PrimaryButton fullWidth>
-              LOG IN
+            <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('LoginScreen')}>
+              LOGIN
             </PrimaryButton>
-            <InfoButton fullWidth onPress={() => navigation.navigate('Help')}>
+            <InfoButton fullWidth rounded marginTop={15} onPress={() => navigation.navigate('Help')}>
               INFORMATION
             </InfoButton>
           </View>
