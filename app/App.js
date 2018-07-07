@@ -1,12 +1,10 @@
-import React, {Component} from 'react';
-import {WelcomeStack} from './config/routes';
+import React from 'react';
+import { WelcomeStack } from './config/routes';
 
-class App extends Component {
-  render() {
-    return (
-      <WelcomeStack />
-    );
-  }
-}
+const App = () => { // eslint-disable-line
+  return (
+    <WelcomeStack />
+  );
+};
 
 export default App;

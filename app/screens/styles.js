@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export default styles = StyleSheet.create({
+const styles = StyleSheet.create({
   flexBox: {
     flex: 1,
     alignItems: 'center',
@@ -8,7 +8,7 @@ export default styles = StyleSheet.create({
   },
   fullscreen: {
     width: '100%',
-    height:' 100%'
+    height: '100%',
   },
   appTitle: {
     width: '100%',
@@ -20,7 +20,7 @@ export default styles = StyleSheet.create({
     width: '90%',
     height: '50%',
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   buttonGroup: {
     flex: 1,
@@ -31,32 +31,32 @@ export default styles = StyleSheet.create({
   helpHeader: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)'
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   headerText: {
     width: '100%',
     // height: 200,
     textAlign: 'center',
     fontSize: 32,
-    color: '#fff'
+    color: '#fff',
   },
   scrollViewBox: {
-    width: '100%'
+    width: '100%',
   },
   helpImg: {
-    height: 250
+    height: 250,
   },
   inputGroup: {
     width: '90%',
   },
-  inputBlock: { 
+  inputBlock: {
     height: 50,
   },
   inputEle: {
     color: '#fff',
   },
   labelEle: {
-    color: '#fff'
+    color: '#fff',
   },
   buttonLoginGroup: {
     flex: 1,
@@ -65,5 +65,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '90%',
     marginTop: 10,
-  }
+  },
 });
+
+export default styles;

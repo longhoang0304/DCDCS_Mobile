@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {Text, View, ImageBackground} from 'react-native';
-import {RkTextInput, RkText, RkTheme, theme} from 'react-native-ui-kitten';
-import {LinkButton, PrimaryButton} from '../components/Button';
+import React, { PureComponent } from 'react';
+import { View } from 'react-native';
+import { RkTextInput, RkText, RkTheme } from 'react-native-ui-kitten';
+import { LinkButton, PrimaryButton } from '../components/Button';
 import styles from './styles';
+import WallpaperBackground from '../components/WallpaperBackground';
 
 RkTheme.setType('RkTextInput', 'rounded2', {
   borderRadius: 100,
@@ -11,26 +12,22 @@ RkTheme.setType('RkTextInput', 'rounded2', {
   borderColor: '#fff',
   underlineColor: '#fff',
   input: {
-    placeholderTextColor: '#fff'
-  }
-})
+    placeholderTextColor: '#fff',
+  },
+});
 
-class Login extends Component {
-  state = {
-    isFontLoaded: false
-  }
-
+class Login extends PureComponent {
   render() {
     const Gentona_Bold = {
-      fontFamily: 'gentona-bold'
+      fontFamily: 'gentona-bold',
     };
     const titleStyle = [styles.appTitle];
     titleStyle.push(Gentona_Bold);
-    const {navigation} = this.props;
+    const { navigation } = this.props;
 
     return (
-      <ImageBackground style={styles.fullscreen} source={require("../assets/images/welcome.jpg")}>
-        <View style={[ styles.fullscreen, styles.flexBox]}>
+      <WallpaperBackground>
+        <View style={[styles.fullscreen, styles.flexBox]}>
           <View style={styles.appTitleContainer}>
             <RkText style={titleStyle}>
               LOG IN
@@ -63,7 +60,7 @@ class Login extends Component {
             </LinkButton>
           </View>
         </View>
-      </ImageBackground>
+      </WallpaperBackground>
     );
   }
 }
