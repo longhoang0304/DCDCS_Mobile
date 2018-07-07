@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { RkButton } from 'react-native-ui-kitten';
-import WallpaperBackground from '../components/WallpaperBackground';
+import WallpaperBackground from '../components/Common/WallpaperBackground';
 // import styles from './styles';
 
 class RemoteControl extends Component {

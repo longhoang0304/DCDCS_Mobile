@@ -9,10 +9,12 @@ const styles = StyleSheet.create({
   fullscreen: {
     width: '100%',
     height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   appTitle: {
     width: '100%',
-    fontSize: 64,
+    fontSize: 48,
+    fontWeight: 'bold',
     textAlign: 'center',
     color: 'rgba(255, 255, 255, 1)',
   },

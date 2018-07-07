@@ -1,37 +1,75 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { RkButton } from 'react-native-ui-kitten';
-import { Ionicons } from '@expo/vector-icons'
-import WallpaperBackground from '../components/WallpaperBackground';
+import { View } from 'react-native';
+import moment from 'moment';
+import WallpaperBackground from '../components/Common/WallpaperBackground';
+import WeatherImage from '../components/Common/WeatherImage';
+import { H1, H6, WhiteText } from '../components/Text';
 // import styles from './styles';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      date: moment().format('ddd, DD MMM YYYY'),
+      mounted: false,
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ mounted: true, date: moment().format('ddd, DD MMM YYYY') });
+    const intervalId = setInterval(this.updateTime.bind(this), 1000);
+    this.setState({ intervalId });
+  }
+
+  componentWillUnmount() {
+    const { intervalId } = this.state;
+    if (!intervalId) {
+      clearInterval(intervalId);
+      this.setState({ mounted: false });
+    }
+  }
+
+  updateTime() {
+    const { mounted } = this.state;
+    if (!mounted) return;
+    this.setState({ date: moment().format('ddd, DD MMM YYYY') });
+  }
+
   render() {
     // const Gentona_Bold = {
     //   fontFamily: 'gentona-bold',
     // };
     // const titleStyle = [styles.headerText, Gentona_Bold];
-    const { navigation } = this.props;
+    // const { navigation } = this.props;
+    const { date } = this.state;
 
     return (
       <WallpaperBackground>
-        <View style={{ flexGrow: 1 }}>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text style={{ color: '#f45042', fontSize: 30, fontWeight: 'bold' }}>Temperature</Text>
-              <Text style={{ color: '#333', fontSize: 72 }}>35 <Ionicons name='temperature-celsius' /></Text>
-            </View>
-            <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Text style={{ color: '#41f49b', fontSize: 30, fontWeight: 'bold' }}>Huminity</Text>
-              <Text style={{ color: '#333', fontSize: 72 }}>55%</Text>
-            </View>
-          </View>
-          <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-            <Text style={{ color: '#32c5ff', fontSize: 30, fontWeight: 'bold' }}>Status</Text>
-            <Text style={{ color: '#333', fontSize: 72 }}>OUTSIDE</Text>
-            <RkButton style={{ width: '90%' }} onPress={() => navigation.navigate('RemoteControl')}>Remote Control</RkButton>
-          </View>
+        <View style={{
+            flex: 1,
+            justifyContent:
+            'space-between',
+            alignItems: 'flex-start',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            paddingLeft: 25,
+            paddingTop: 25,
+            flexDirection: 'row',
+          }}
+        >
+        <View>
+          <H1><WhiteText>35°</WhiteText></H1>
+          <WhiteText style={{ fontSize: 18 }}>{date}</WhiteText>
+          <H6><WhiteText>DRYING</WhiteText></H6>
         </View>
+        <View>
+          <WeatherImage />
+        </View>
+        </View>
+        {/*
+          <RkButton style={{ width: '90%' }} onPress={() => navigation.navigate('RemoteControl')}>
+            Remote Control
+          </RkButton>
+        */}
       </WallpaperBackground>
     );
   }

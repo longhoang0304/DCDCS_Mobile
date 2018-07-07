@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import Welcome from '../screens/Welcome';
 import Help from '../screens/Help';
@@ -9,13 +8,13 @@ import RemoteControl from '../screens/RemoteControl';
 const HomeStack = createStackNavigator(
   {
     RemoteControl,
-    Home
+    Home,
   },
   {
     initialRouteName: 'Home',
     headerMode: 'none',
-  }
-)
+  },
+);
 
 const LoginStack = createSwitchNavigator(
   {
@@ -25,7 +24,7 @@ const LoginStack = createSwitchNavigator(
   {
     initialRouteName: 'Login',
     headerMode: 'none',
-  }
+  },
 );
 
 const LoginScreen = createStackNavigator(
@@ -36,10 +35,10 @@ const LoginScreen = createStackNavigator(
   {
     initialRouteName: 'LoginStack',
     headerMode: 'none',
-  }
+  },
 );
 
-export const WelcomeStack = createStackNavigator(
+const WelcomeStack = createStackNavigator(
   {
     Welcome,
     Help,
@@ -48,5 +47,7 @@ export const WelcomeStack = createStackNavigator(
   {
     headerMode: 'none',
     initialRouteName: 'Welcome',
-  }
+  },
 );
+
+export default WelcomeStack;

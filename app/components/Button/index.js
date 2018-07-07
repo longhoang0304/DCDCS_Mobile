@@ -5,5 +5,5 @@ import LinkButton from './LinkButton';
 export {
   InfoButton,
   PrimaryButton,
-  LinkButton
-}
+  LinkButton,
+};

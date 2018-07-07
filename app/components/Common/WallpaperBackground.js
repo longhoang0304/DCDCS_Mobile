@@ -1,28 +1,28 @@
 import React from 'react';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { ImageBackground } from 'react-native';
 
 function getWallpaper() {
-  const hour = moment().hour();
+  const hour = moment().tz('GTM+7').hour();
   if (hour >= 0 && hour <= 3) {
-    return require('../assets/images/wallaper/midnight.jpg');
+    return require('../../assets/images/wallaper/midnight.jpg');
   }
   if (hour >= 6 && hour <= 9) {
-    return require('../assets/images/wallaper/sunrise.jpg');
+    return require('../../assets/images/wallaper/sunrise.jpg');
   }
   if (hour >= 10 && hour <= 12) {
-    return require('../assets/images/wallaper/noon.jpg');
+    return require('../../assets/images/wallaper/noon.jpg');
   }
   if (hour >= 13 && hour <= 14) {
-    return require('../assets/images/wallaper/afternoon.jpg');
+    return require('../../assets/images/wallaper/afternoon.jpg');
   }
   if (hour >= 15 && hour <= 16) {
-    return require('../assets/images/wallaper/evening.jpg');
+    return require('../../assets/images/wallaper/evening.jpg');
   }
   if (hour >= 17 && hour <= 18) {
-    return require('../assets/images/wallaper/sunset.jpg');
+    return require('../../assets/images/wallaper/sunset.jpg');
   }
-  return require('../assets/images/wallaper/night.jpg');
+  return require('../../assets/images/wallaper/night.jpg');
 }
 
 const WallpaperBackground = ({ children }) => { // eslint-disable-line

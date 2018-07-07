@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { RkTextInput, RkText, RkTheme } from 'react-native-ui-kitten';
 import { LinkButton, PrimaryButton } from '../components/Button';
 import styles from './styles';
-import WallpaperBackground from '../components/WallpaperBackground';
+import WallpaperBackground from '../components/Common/WallpaperBackground';
 
 RkTheme.setType('RkTextInput', 'rounded2', {
   borderRadius: 100,
@@ -18,11 +18,11 @@ RkTheme.setType('RkTextInput', 'rounded2', {
 
 class Login extends PureComponent {
   render() {
-    const Gentona_Bold = {
-      fontFamily: 'gentona-bold',
-    };
+    // const Gentona_Bold = {
+    //   fontFamily: 'gentona-bold',
+    // };
     const titleStyle = [styles.appTitle];
-    titleStyle.push(Gentona_Bold);
+    // titleStyle.push(Gentona_Bold);
     const { navigation } = this.props;
 
     return (

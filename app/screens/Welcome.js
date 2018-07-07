@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { RkText } from 'react-native-ui-kitten';
 import { Font } from 'expo';
 import { InfoButton, PrimaryButton } from '../components/Button';
-import WallpaperBackground from '../components/WallpaperBackground';
+import WallpaperBackground from '../components/Common/WallpaperBackground';
 import styles from './styles';
 
 class Welcome extends Component {
@@ -14,7 +14,7 @@ class Welcome extends Component {
     };
   }
 
-  async UNSAFE_componentWillMount() {
+  async componentDidMount() {
     await Font.loadAsync({
       'gentona-bold': require('../assets/fonts/Gentona_Bold.otf'),
     });
@@ -22,16 +22,16 @@ class Welcome extends Component {
   }
 
   render() {
-    const { isFontLoaded } = this.state;
-    const Gentona_Bold = {
-      fontFamily: 'gentona-bold',
-    };
+    // const { isFontLoaded } = this.state;
+    // const Gentona_Bold = {
+    //   fontFamily: 'gentona-bold',
+    // };
     const titleStyle = [styles.appTitle];
     const { navigation } = this.props;
 
-    if (isFontLoaded) {
-      titleStyle.push(Gentona_Bold);
-    }
+    // if (isFontLoaded) {
+    //   titleStyle.push(Gentona_Bold);
+    // }
 
     return (
       <WallpaperBackground>
@@ -43,10 +43,10 @@ class Welcome extends Component {
           </View>
           <View style={styles.buttonGroup}>
             <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('LoginScreen')}>
-              LOGIN
+              {'login'.toUpperCase()}
             </PrimaryButton>
             <InfoButton fullWidth rounded marginTop={15} onPress={() => navigation.navigate('Help')}>
-              INFORMATION
+              {'INFORMATION'.toUpperCase()}
             </InfoButton>
           </View>
         </View>
