@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { RkButton } from 'react-native-ui-kitten';
+import { Ionicons } from '@expo/vector-icons'
 import WallpaperBackground from '../components/WallpaperBackground';
 // import styles from './styles';
 
@@ -18,7 +19,7 @@ class Home extends Component {
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
               <Text style={{ color: '#f45042', fontSize: 30, fontWeight: 'bold' }}>Temperature</Text>
-              <Text style={{ color: '#333', fontSize: 72 }}>35*C</Text>
+              <Text style={{ color: '#333', fontSize: 72 }}>35 <Ionicons name='temperature-celsius' /></Text>
             </View>
             <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
               <Text style={{ color: '#41f49b', fontSize: 30, fontWeight: 'bold' }}>Huminity</Text>
