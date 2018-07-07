@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { RkText } from 'react-native-ui-kitten';
+import { TouchableOpacity } from 'react-native';
 import { Font } from 'expo';
-import { InfoButton, PrimaryButton } from '../components/Button';
+import { WhiteText } from '../components/Text';
 import WallpaperBackground from '../components/Common/WallpaperBackground';
 import styles from './styles';
 
@@ -35,21 +34,17 @@ class Welcome extends Component {
 
     return (
       <WallpaperBackground>
-        <View style={[styles.fullscreen, styles.flexBox]}>
-          <View style={styles.appTitleContainer}>
-            <RkText style={titleStyle}>
-              DCDCS App
-            </RkText>
-          </View>
-          <View style={styles.buttonGroup}>
-            <PrimaryButton fullWidth rounded onPress={() => navigation.navigate('LoginScreen')}>
-              {'login'.toUpperCase()}
-            </PrimaryButton>
-            <InfoButton fullWidth rounded marginTop={15} onPress={() => navigation.navigate('Help')}>
-              {'INFORMATION'.toUpperCase()}
-            </InfoButton>
-          </View>
-        </View>
+        <TouchableOpacity
+          style={[styles.fullscreen, styles.flexBox]}
+          onPress={() => navigation.navigate('LoginScreen')}
+        >
+          <WhiteText style={titleStyle}>
+            DCDCS App
+          </WhiteText>
+          <WhiteText>
+            Tap to continue
+          </WhiteText>
+        </TouchableOpacity>
       </WallpaperBackground>
     );
   }

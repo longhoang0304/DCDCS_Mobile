@@ -3,7 +3,7 @@ import moment from 'moment-timezone';
 import { ImageBackground } from 'react-native';
 
 function getWallpaper() {
-  const hour = moment().tz('GTM+7').hour();
+  const hour = moment().tz('Asia/Ho_Chi_Minh').hour();
   if (hour >= 0 && hour <= 3) {
     return require('../../assets/images/wallaper/midnight.jpg');
   }
@@ -25,13 +25,14 @@ function getWallpaper() {
   return require('../../assets/images/wallaper/night.jpg');
 }
 
-const WallpaperBackground = ({ children }) => { // eslint-disable-line
+const WallpaperBackground = ({ children, onPress }) => { // eslint-disable-line
   return (
     <ImageBackground
       style={{
         width: '100%',
         height: '100%',
       }}
+      onPress={onPress}
       source={getWallpaper()}
     >
       { children }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, ImageBackground } from 'react-native';
-import { RkText } from 'react-native-ui-kitten';
+import { Text } from 'react-native-elements';
 import styles from './styles';
 
 const Help = () => {
@@ -13,15 +13,15 @@ const Help = () => {
     <ScrollView contentContainerStyle={styles.scrollViewBox}>
       <ImageBackground style={styles.helpImg} source={require('../assets/images/helpdesk.jpg')}>
         <View style={[styles.helpHeader, styles.flexBox]}>
-            <RkText rkType='large' style={titleStyle}>
+            <Text h1 style={titleStyle}>
                 INFORMATION
-            </RkText>
+            </Text>
         </View>
       </ImageBackground>
       <View>
-        <RkText>
+        <Text>
             Text
-        </RkText>
+        </Text>
       </View>
     </ScrollView>
   );

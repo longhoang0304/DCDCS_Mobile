@@ -16,8 +16,9 @@ const WeatherImage = ({ isRain, isCloud }) => { // eslint-disable-line
   return (
     <Image
       style={{
-        width: 100,
-        height: 100,
+        width: 80,
+        height: 80,
+        // marginRight: 10,
       }}
       source={getWeatherImage(isRain, isCloud)}
     />
