@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
 import moment from 'moment';
-import WallpaperBackground from '../components/Common/WallpaperBackground';
-import WeatherImage from '../components/Common/WeatherImage';
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Alert } from 'react-native';
+import { Button } from 'react-native-elements';
+
 import { H1, H6, WhiteText } from '../components/Text';
-import { Button } from '../../node_modules/react-native-elements';
+import WeatherImage from '../components/Common/WeatherImage';
+import WallpaperBackground from '../components/Common/WallpaperBackground';
+import DryerSettingDialog from '../components/Common/DryerSettingDialog';
 // import styles from './styles';
 
 class Home extends Component {
@@ -14,6 +16,10 @@ class Home extends Component {
       date: moment().tz('Asia/Ho_Chi_Minh').format('ddd, DD MMM YYYY'),
       time: moment().tz('Asia/Ho_Chi_Minh').format('HH:mm:ss'),
       mounted: false,
+      showModal: false,
+      dcState: 0,
+      dryerState: 0,
+      dryerMinute: 5,
     };
   }
 
@@ -31,6 +37,57 @@ class Home extends Component {
     }
   }
 
+  handleDC(dcState) {
+    this.setState({ dcState });
+  }
+
+  handleDryer(dryerState) {
+    this.setState({ dryerState });
+    this.toggleModal();
+  }
+
+  alertDCControl() {
+    const { dcState } = this.state;
+    const $this = this;
+    Alert.alert(
+      'CONFIRM',
+      `Do you want to ${dcState ? 'collect' : 'dry'} your clothes?`,
+      [
+        {
+          text: 'Yes, do it',
+          onPress: () => $this.handleDC(!dcState),
+        },
+        {
+          text: 'No',
+        },
+      ],
+      {
+        cancelable: false,
+      },
+    );
+  }
+
+  toggleModal() {
+    const { showModal } = this.state;
+    this.setState({ showModal: !showModal });
+  }
+
+  static genGreeting() {
+    const hour = moment().tz('Asia/Ho_Chi_Minh').hour();
+    const greetngs = [
+      'Good morning',
+      'Have a great day',
+      'Good afternoon',
+      'Good evening',
+      'Good night',
+    ];
+    if (hour >= 4 && hour <= 8) return greetngs[0];
+    if (hour >= 9 && hour <= 12) return greetngs[1];
+    if (hour >= 13 && hour <= 17) return greetngs[2];
+    if (hour >= 18 && hour <= 20) return greetngs[3];
+    return greetngs[4];
+  }
+
   updateTime() {
     const { mounted } = this.state;
     if (!mounted) return;
@@ -46,10 +103,26 @@ class Home extends Component {
     // };
     // const titleStyle = [styles.headerText, Gentona_Bold];
     // const { navigation } = this.props;
-    const { date, time } = this.state;
+    const {
+      date,
+      time,
+      dcState,
+      dryerState,
+      showModal,
+      dryerMinute,
+    } = this.state;
 
     return (
       <WallpaperBackground>
+        <DryerSettingDialog
+          state={dryerState}
+          minute={dryerMinute}
+          isShow={showModal}
+          onChange={_minute => this.setState({ dryerMinute: _minute })}
+          toggleDialog={() => this.toggleModal()}
+          handleDryer={() => this.handleDryer()}
+        />
+        {/* =============== END POPUP DIALOG ================= */}
         <View style={{
             flex: 1,
             flexDirection: 'column',
@@ -109,8 +182,8 @@ class Home extends Component {
                   marginBottom: 15,
                 }}
                 rounded={true}
-                title='Dry clothes'
-                onPress={() => console.log('ABC')}
+                title={`${dcState ? 'Collect' : 'Dry'} clothes`}
+                onPress={() => this.alertDCControl()}
               />
               <Button
                 buttonStyle={{
@@ -119,8 +192,8 @@ class Home extends Component {
                   marginVertical: 0,
                 }}
                 rounded={true}
-                title='Setup dryer'
-                onPress={() => console.log('ABC')}
+                title='Dryer setting'
+                onPress={() => this.toggleModal()}
               />
             </View>
             <TouchableOpacity
@@ -131,12 +204,12 @@ class Home extends Component {
                   paddingBottom: 15,
                   paddingRight: 15,
                 }}
-              onPress={() => console.log('ABC')}
+              onPress={() => console.log('Forward to profile')}
             >
               <WhiteText style={{
                 fontSize: 18,
               }}>
-                Good evening,
+                {`${Home.genGreeting()},`}
               </WhiteText>
               <H6>
                 <WhiteText>Long Hoàng</WhiteText>
