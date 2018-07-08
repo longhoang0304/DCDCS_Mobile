@@ -16,10 +16,8 @@ This repository is the Android application part of Capstone project.
 ## Technologies
 ### Android Application
 - [React Native](RN_README.md) - Framework for building native apps
-- React Native UI Kitten - UI Template
-- React Navigation - Routing and navigation for React Native apps
 - Redux and Redux Saga - State management with asynchonous support
-- Java
+- NodeJS
 
 ## Installation
 ### Requirement
