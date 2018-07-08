@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ActivityIndicator } from 'react-native';
 import PopupDialog from 'react-native-popup-dialog';
-import { Text } from 'react-native-elements';
 
 const LoadingDialog = (props) => {
   const { isShow, children } = props;
