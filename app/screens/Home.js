@@ -97,6 +97,18 @@ class Home extends Component {
     });
   }
 
+  static async checkData() {
+    const res = await fetch('http://192.168.1.107:3000/api/health-check', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    const json = await res.json();
+    return json;
+  }
+
   render() {
     // const Gentona_Bold = {
     //   fontFamily: 'gentona-bold',

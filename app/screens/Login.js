@@ -1,21 +1,65 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button, Text } from 'react-native-elements';
 import styles from './styles';
 import WallpaperBackground from '../components/Common/WallpaperBackground';
 import { WhiteText, H4 } from '../components/Text';
+import LoadingDialog from '../components/Common/LoadingDialog';
 
 
-class Login extends PureComponent {
-  render() {
-    // const Gentona_Bold = {
-    //   fontFamily: 'gentona-bold',
-    // };
-    // titleStyle.push(Gentona_Bold);
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: 'crabbycrab',
+      password: '1234567',
+      error: '',
+      isShow: false,
+    };
+  }
+
+  handleChange(prop, value) {
+    this.setState({ [prop]: value });
+  }
+
+  async login() {
+    const { username, password } = this.state;
     const { navigation } = this.props;
+    const res = await fetch('http://192.168.1.107:3000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    const json = await res.json();
+    if (json.token) {
+      this.setState({
+        isShow: false,
+      });
+      navigation.navigate('HomeStack');
+    } else {
+      this.setState({
+        error: 'Wrong password',
+        isShow: false,
+      });
+    }
+  }
+
+  render() {
+    const { navigation } = this.props;
+    const { username, password, error, isShow } = this.state; // eslint-disable-line
 
     return (
       <WallpaperBackground>
+        <LoadingDialog isShow={isShow} >
+          <Text style={{ fontSize: 16 }}>Logging in</Text>
+        </LoadingDialog>
         <View style={[styles.fullscreen, styles.flexBox]}>
           <View style={{
             flex: 1,
@@ -41,9 +85,10 @@ class Login extends PureComponent {
                 color: '#fff',
                 paddingLeft: 5,
               }}
+              value={username}
               placeholder='Please enter your username'
               placeholderTextColor='#ddd'
-              onChangeText={() => console.log()}
+              onChangeText={value => this.handleChange('username', value)}
               underlineColorAndroid='#fff'
             />
             <FormLabel>
@@ -55,12 +100,13 @@ class Login extends PureComponent {
                 paddingLeft: 5,
               }}
               secureTextEntry={true}
+              value={password}
               placeholder='Please enter your password'
               placeholderTextColor='#ddd'
-              onChangeText={() => console.log()}
+              onChangeText={value => this.handleChange('password', value)}
               underlineColorAndroid='#fff'
             />
-            <FormValidationMessage>Wrong password</FormValidationMessage>
+            {error ? <FormValidationMessage>{error}</FormValidationMessage> : null}
           </View>
           <View
             style={{
@@ -74,7 +120,7 @@ class Login extends PureComponent {
             <Button
               rounded
               backgroundColor='rgba(255, 255, 255, 0.2)'
-              onPress={() => navigation.navigate('HomeStack')}
+              onPress={() => { this.setState({ error: '', isShow: true }); this.login(); }}
               title='LOGIN'
             />
             <Button

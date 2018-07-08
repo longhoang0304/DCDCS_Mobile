@@ -25,6 +25,7 @@
     ],
     "globals": {
       "_": true,
-      "moment": true
+      "moment": true,
+      "fetch": true
     }
   }
