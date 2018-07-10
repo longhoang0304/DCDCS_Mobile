@@ -1,9 +1,14 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import WelcomeStack from './config/routes';
+import configureStore from './configureStore';
 
+const store = configureStore();
 const App = () => { // eslint-disable-line
   return (
-    <WelcomeStack />
+    <Provider store={store}>
+      <WelcomeStack />
+    </Provider>
   );
 };
 

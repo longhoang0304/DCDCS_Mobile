@@ -138,7 +138,7 @@ class Home extends Component {
         <View style={{
             flex: 1,
             flexDirection: 'column',
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
           }}
         >
           <View style={{
