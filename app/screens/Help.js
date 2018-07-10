@@ -4,10 +4,7 @@ import { Text } from 'react-native-elements';
 import styles from './styles';
 
 const Help = () => {
-  const Gentona_Bold = {
-    fontFamily: 'gentona-bold',
-  };
-  const titleStyle = [styles.headerText, Gentona_Bold];
+  const titleStyle = [styles.headerText];
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewBox}>

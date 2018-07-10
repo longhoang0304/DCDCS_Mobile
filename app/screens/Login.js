@@ -25,7 +25,7 @@ class Login extends Component {
   async login() {
     const { username, password } = this.state;
     const { navigation } = this.props;
-    const res = await fetch('http://192.168.1.107:3000/api/auth/login', {
+    const res = await fetch('https://dcdcs-api.herokuapp.com/api/auth/login', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

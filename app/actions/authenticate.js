@@ -1,8 +1,9 @@
 import { AuthenticateTypes as AuthTypes } from './ActionTypes';
+import { post, APIUrl } from '../lib/helper';
+import DB from '../lib/localDb';
 
-const loggingIn = (loadingMsg) => ({
+const loggingIn = () => ({
   type: AuthTypes.AUTH_LOGIN,
-  loadingMsg,
 });
 
 const loginSuccess = (token) => ({
@@ -18,23 +19,19 @@ const loginFailed = (errorMsg) => ({
 
 
 const login = (username, password) => async (dispatch) => {
-  dispatch(loggingIn('Getting you in'));
-  const res = await fetch('https://abc', {
-    method: 'POST',
-    body: JSON.stringify({
-      username,
-      password,
-    }),
+  dispatch(loggingIn());
+  const res = await post(APIUrl('login'), false, {
+    username,
+    password,
   });
   const json = await res.json();
   if (res.ok) {
     const { token } = json;
-    dispatch(loginSuccess(token));
-    return json.token;
+    await DB.save('token', token);
+    dispatch(loginSuccess());
   }
-  const { msg } = json;
-  dispatch(loginFailed(msg));
-  return msg || 'Wrong password';
+  const { message } = json;
+  dispatch(loginFailed(message || 'Wrong password'));
 };
 
 const AuthenticateActions = {
