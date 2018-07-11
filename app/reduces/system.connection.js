@@ -12,6 +12,8 @@ const connectionReducer = (state = initState, action) => {
       return {
         ...state,
         isLoading: true,
+        isLogin: false,
+        healthCheck: 0,
       };
     }
     case SystemTypes.SYSTEM_CHECK_CONNECTION_SUCCESS: {

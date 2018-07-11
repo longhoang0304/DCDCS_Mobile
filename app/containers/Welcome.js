@@ -3,7 +3,7 @@ import Welcome from '../screens/Welcome';
 import { SysActions } from '../actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  ...state,
+  ...state.connection,
   ...ownProps,
 });
 

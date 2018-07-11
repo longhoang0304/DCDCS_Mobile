@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Button, Text } from 'react-native-elements';
 import styles from './styles';
@@ -7,7 +7,7 @@ import { WhiteText, H4 } from '../components/Text';
 import LoadingDialog from '../components/Common/LoadingDialog';
 
 
-class Login extends Component {
+class Login extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,42 +22,24 @@ class Login extends Component {
     this.setState({ [prop]: value });
   }
 
-  async login() {
-    const { username, password } = this.state;
-    const { navigation } = this.props;
-    const res = await fetch('https://dcdcs-api.herokuapp.com/api/auth/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
+  componentDidUpdate() {
+    const { isLogin, navigation } = this.props;
+    if (isLogin) navigation.navigate('HomeStack');
+  }
 
-    const json = await res.json();
-    if (json.token) {
-      this.setState({
-        isShow: false,
-      });
-      navigation.navigate('HomeStack');
-    } else {
-      this.setState({
-        error: 'Wrong password',
-        isShow: false,
-      });
-    }
+  login() {
+    const { username, password } = this.state;
+    const { login } = this.props;
+    login(username, password);
   }
 
   render() {
-    const { navigation } = this.props;
-    const { username, password, error, isShow } = this.state; // eslint-disable-line
+    const { navigation, isLoading, errorMsg } = this.props;
+    const { username, password } = this.state; // eslint-disable-line
 
     return (
       <WallpaperBackground>
-        <LoadingDialog isShow={isShow} >
+        <LoadingDialog isShow={isLoading} >
           <Text style={{ fontSize: 16 }}>Logging in</Text>
         </LoadingDialog>
         <View style={[styles.fullscreen, styles.flexBox]}>
@@ -106,7 +88,7 @@ class Login extends Component {
               onChangeText={value => this.handleChange('password', value)}
               underlineColorAndroid='#fff'
             />
-            {error ? <FormValidationMessage>{error}</FormValidationMessage> : null}
+            {errorMsg ? <FormValidationMessage>{errorMsg}</FormValidationMessage> : null}
           </View>
           <View
             style={{

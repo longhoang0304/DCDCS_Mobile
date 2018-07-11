@@ -10,7 +10,7 @@ const loginReducer = (state = initState, action) => {
   switch (action.type) {
     case AuthenticateTypes.AUTH_LOGIN: {
       return {
-        ...state,
+        ...initState,
         isLoading: true,
       };
     }

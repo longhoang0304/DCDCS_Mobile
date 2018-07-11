@@ -10,7 +10,7 @@ const LoadingDialog = (props) => {
     <PopupDialog
       ref={(popupDialog) => { this.popupDialog = popupDialog; }}
       show={isShow}
-      width={150}
+      width={0.5}
       height={100}
       dismissOnTouchOutside={false}
     >

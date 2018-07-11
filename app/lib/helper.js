@@ -1,12 +1,13 @@
-import fetch from 'whatwg-fetch-timeout';
+import 'whatwg-fetch-timeout';
 import _ from 'lodash';
 import DB from './localDb';
 
 const APIUrl = (api) => `https://dcdcs-api.herokuapp.com/api/${api}`;
+// const APIUrl = (api) => `https://192.168.139.1/api/${api}`;
 
 const getToken = async () => {
   try {
-    const token = await DB.load('token');
+    const token = await DB.hload('token');
     return token;
   } catch (error) {
     return '';
@@ -49,6 +50,7 @@ const request = async (url, method, useToken, body) => {
 const genHttpMethod = (methodName) =>
   async (url, useToken, body) => {
     const res = await request(url, methodName.toUpperCase(), useToken, body);
+    if (res.status === 404) throw new Error('API not found!');
     return res;
   };
 

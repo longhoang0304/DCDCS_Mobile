@@ -9,11 +9,8 @@ const db = new Storage({
   storageBackend: AsyncStorage,
 });
 
-const dbLoad = db.load;
-const dbSave = db.save;
-
-db.load = async (key) => {
-  const ret = await dbLoad({
+db.hload = async (key) => {
+  const ret = await db.load({
     key,
     autoSync: false,
     syncInBackground: false,
@@ -22,8 +19,8 @@ db.load = async (key) => {
   return ret;
 };
 
-db.save = async (key, data) => {
-  await dbSave({
+db.hsave = async (key, data) => {
+  await db.save({
     key,
     data,
     expires: null,

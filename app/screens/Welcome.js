@@ -1,38 +1,57 @@
-import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import React, { PureComponent } from 'react';
+import { TouchableOpacity, Alert } from 'react-native';
+import { Text } from 'react-native-elements';
 import { WhiteText } from '../components/Text';
 import WallpaperBackground from '../components/Common/WallpaperBackground';
+import LoadingDialog from '../components/Common/LoadingDialog';
 import styles from './styles';
 
-class Welcome extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-    };
+class Welcome extends PureComponent {
+  componentDidUpdate() {
+    const { isLogin, healthCheck, navigation } = this.props;
+
+    if (!healthCheck) {
+      return;
+    }
+    if (healthCheck === 2) {
+      Alert.alert(
+        'Error',
+        'Cannot connect to server',
+        [
+          {
+            text: 'Try again', onPress: () => this.checkInternetConnection(),
+          },
+          {
+            text: 'Cancel', onPress: () => null,
+          },
+        ],
+      );
+      return;
+    }
+    if (!isLogin) {
+      navigation.navigate('LoginScreen');
+      return;
+    }
+    navigation.navigate('HomeStack');
   }
 
   checkInternetConnection() {
-
+    const { connect } = this.props;
+    connect();
   }
 
   render() {
-    // const { isFontLoaded } = this.state;
-    // const Gentona_Bold = {
-    //   fontFamily: 'gentona-bold',
-    // };
     const titleStyle = [styles.appTitle];
-    const { navigation } = this.props;
-
-    // if (isFontLoaded) {
-    //   titleStyle.push(Gentona_Bold);
-    // }
+    const { isLoading } = this.props;
 
     return (
       <WallpaperBackground>
+        <LoadingDialog isShow={isLoading} >
+          <Text style={{ fontSize: 16 }}>Connecting to server</Text>
+        </LoadingDialog>
         <TouchableOpacity
           style={[styles.fullscreen, styles.flexBox]}
-          onPress={() => navigation.navigate('LoginScreen')}
+          onPress={() => this.checkInternetConnection()}
         >
           <WhiteText style={titleStyle}>
             DCDCS App

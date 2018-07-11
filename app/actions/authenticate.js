@@ -20,18 +20,24 @@ const loginFailed = (errorMsg) => ({
 
 const login = (username, password) => async (dispatch) => {
   dispatch(loggingIn());
-  const res = await post(APIUrl('login'), false, {
-    username,
-    password,
-  });
-  const json = await res.json();
-  if (res.ok) {
-    const { token } = json;
-    await DB.save('token', token);
-    dispatch(loginSuccess());
+  let res;
+  try {
+    res = await post(APIUrl('auth/login'), false, {
+      username,
+      password,
+    });
+    const json = await res.json();
+    if (res.ok) {
+      const { token } = json;
+      await DB.hsave('token', token);
+      dispatch(loginSuccess());
+    }
+    const { message } = json;
+    dispatch(loginFailed(message || 'Wrong password'));
+  } catch (error) {
+    console.log(error.message);
+    dispatch(loginFailed(error.message));
   }
-  const { message } = json;
-  dispatch(loginFailed(message || 'Wrong password'));
 };
 
 const AuthenticateActions = {
