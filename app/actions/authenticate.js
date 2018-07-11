@@ -1,4 +1,4 @@
-import { AuthenticateTypes as AuthTypes } from './ActionTypes';
+import { AuthenticateTypes as AuthTypes } from '../constants/ActionTypes';
 import { post, APIUrl } from '../lib/helper';
 import DB from '../lib/localDb';
 
@@ -6,15 +6,15 @@ const loggingIn = () => ({
   type: AuthTypes.AUTH_LOGIN,
 });
 
-const loginSuccess = (token) => ({
+const loginSuccess = () => ({
   type: AuthTypes.AUTH_LOGIN_SUCCESS,
-  token,
 });
 
 const loginFailed = (errorMsg) => ({
   type: AuthTypes.AUTH_LOGIN_FAILED,
-  isLoading: false,
-  errorMsg,
+  payload: {
+    errorMsg,
+  },
 });
 
 

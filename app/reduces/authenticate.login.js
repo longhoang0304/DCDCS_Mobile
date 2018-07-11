@@ -1,4 +1,4 @@
-import { AuthenticateTypes } from '../actions/ActionTypes';
+import { AuthenticateTypes } from '../constants/ActionTypes';
 
 const initState = {
   errorMsg: '',
@@ -7,6 +7,7 @@ const initState = {
 };
 
 const loginReducer = (state = initState, action) => {
+  const { errorMsg } = action.payload;
   switch (action.type) {
     case AuthenticateTypes.AUTH_LOGIN: {
       return {
@@ -26,7 +27,7 @@ const loginReducer = (state = initState, action) => {
         ...state,
         isLoading: false,
         isLogin: false,
-        errorMsg: action.errorMsg,
+        errorMsg,
       };
     }
     default: {

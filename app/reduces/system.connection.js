@@ -1,4 +1,4 @@
-import { SystemTypes } from '../actions/ActionTypes';
+import { SystemTypes } from '../constants/ActionTypes';
 
 const initState = {
   isLoading: false,
@@ -7,6 +7,8 @@ const initState = {
 };
 
 const connectionReducer = (state = initState, action) => {
+  const { isLogin } = action.payload;
+
   switch (action.type) {
     case SystemTypes.SYSTEM_CHECK_CONNECTION: {
       return {
@@ -20,7 +22,7 @@ const connectionReducer = (state = initState, action) => {
       return {
         ...state,
         isLoading: false,
-        isLogin: action.isLogin,
+        isLogin,
         healthCheck: 1,
       };
     }
