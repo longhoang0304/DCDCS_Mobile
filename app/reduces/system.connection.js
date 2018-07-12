@@ -7,7 +7,7 @@ const initState = {
 };
 
 const connectionReducer = (state = initState, action) => {
-  const { isLogin } = action.payload;
+  const { isLogin } = action.payload || {};
 
   switch (action.type) {
     case SystemTypes.SYSTEM_CHECK_CONNECTION: {
