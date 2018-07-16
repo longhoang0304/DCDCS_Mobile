@@ -2,15 +2,18 @@ import { AuthenticateTypes as AuthTypes } from '../constants/ActionTypes';
 import { post, APIUrl } from '../lib/helper';
 import DB from '../lib/localDb';
 
-const loggingIn = () => ({
+const gatheringData = () => ({
   type: AuthTypes.AUTH_LOGIN,
 });
 
-const loginSuccess = () => ({
+const getDataSuccess = (info) => ({
   type: AuthTypes.AUTH_LOGIN_SUCCESS,
+  payload: {
+    info,
+  },
 });
 
-const loginFailed = (errorMsg) => ({
+const getDataFailed = (errorMsg) => ({
   type: AuthTypes.AUTH_LOGIN_FAILED,
   payload: {
     errorMsg,
@@ -18,8 +21,8 @@ const loginFailed = (errorMsg) => ({
 });
 
 
-const login = (username, password) => async (dispatch) => {
-  dispatch(loggingIn());
+const getInfo = (username, password) => async (dispatch) => {
+  dispatch(gatheringData());
   let res;
   try {
     res = await post(APIUrl('auth/login'), false, {
@@ -30,19 +33,19 @@ const login = (username, password) => async (dispatch) => {
     if (res.ok) {
       const { token } = json;
       await DB.hsave('token', token);
-      dispatch(loginSuccess());
+      dispatch(getDataSuccess());
       return;
     }
     const { message } = json;
-    dispatch(loginFailed(message || 'Wrong password'));
+    dispatch(getDataFailed(message || 'Wrong password'));
   } catch (error) {
     console.log(error.message);
-    dispatch(loginFailed(error.message));
+    dispatch(getDataFailed(error.message));
   }
 };
 
-const AuthenticateActions = {
-  login,
+const UserActions = {
+  getInfo,
 };
 
-export default AuthenticateActions;
+export default UserActions;

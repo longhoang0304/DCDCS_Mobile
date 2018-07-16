@@ -106,6 +106,7 @@ class Home extends Component {
       showModal,
       dryerMinute,
     } = this.state;
+    const { navigation } = this.props;
 
     return (
       <WallpaperBackground>
@@ -199,7 +200,7 @@ class Home extends Component {
                   paddingBottom: 15,
                   paddingRight: 15,
                 }}
-              onPress={() => console.log('Forward to profile')}
+              onPress={() => navigation.navigate('UserInfo')}
             >
               <WhiteText style={{
                 fontSize: 18,

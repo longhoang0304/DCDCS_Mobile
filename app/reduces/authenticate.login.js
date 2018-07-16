@@ -7,7 +7,7 @@ const initState = {
 };
 
 const loginReducer = (state = initState, action) => {
-  const { errorMsg } = action.payload;
+  const { errorMsg } = action.payload || {};
   switch (action.type) {
     case AuthenticateTypes.AUTH_LOGIN: {
       return {

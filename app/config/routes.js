@@ -2,13 +2,13 @@ import { createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import Welcome from '../containers/Welcome';
 import Help from '../screens/Help';
 import Login from '../containers/Login';
-import Home from '../screens/Home';
-import RemoteControl from '../screens/RemoteControl';
+import Home from '../containers/Home';
+import UserInfo from '../containers/User';
 
 const HomeStack = createStackNavigator(
   {
-    RemoteControl,
     Home,
+    UserInfo,
   },
   {
     initialRouteName: 'Home',
