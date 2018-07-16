@@ -1,49 +1,46 @@
-import { AuthenticateTypes as AuthTypes } from '../constants/ActionTypes';
-import { post, APIUrl } from '../lib/helper';
-import DB from '../lib/localDb';
+import { UserTypes } from '../constants/ActionTypes';
+import { get, APIUrl } from '../lib/helper';
 
+// ============== GET USER DATA START ==============
 const gatheringData = () => ({
-  type: AuthTypes.AUTH_LOGIN,
+  type: UserTypes.USER_GET_INFO,
 });
 
 const getDataSuccess = (info) => ({
-  type: AuthTypes.AUTH_LOGIN_SUCCESS,
+  type: UserTypes.USER_GET_INFO_SUCCESS,
   payload: {
     info,
   },
 });
 
 const getDataFailed = (errorMsg) => ({
-  type: AuthTypes.AUTH_LOGIN_FAILED,
+  type: UserTypes.USER_GET_INFO_FAILED,
   payload: {
     errorMsg,
   },
 });
 
 
-const getInfo = (username, password) => async (dispatch) => {
+const getInfo = () => async (dispatch, getStore) => {
   dispatch(gatheringData());
+  const store = getStore().auth;
+  const { userId } = store;
   let res;
   try {
-    res = await post(APIUrl('auth/login'), false, {
-      username,
-      password,
-    });
+    res = await get(APIUrl(`users/${userId}`), true);
     const json = await res.json();
     if (res.ok) {
-      const { token } = json;
-      await DB.hsave('token', token);
-      dispatch(getDataSuccess());
+      dispatch(getDataSuccess(json));
       return;
     }
     const { message } = json;
-    dispatch(getDataFailed(message || 'Wrong password'));
+    dispatch(getDataFailed(message || 'Unknown Error Occurred'));
   } catch (error) {
     console.log(error.message);
     dispatch(getDataFailed(error.message));
   }
 };
-
+// ============== GET USER DATA END ==============
 const UserActions = {
   getInfo,
 };

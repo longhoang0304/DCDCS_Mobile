@@ -3,7 +3,7 @@ import Login from '../screens/Login';
 import { AuthActions } from '../actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  ...state.login,
+  ...state.auth,
   ...ownProps,
 });
 

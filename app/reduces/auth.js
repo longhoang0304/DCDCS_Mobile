@@ -4,10 +4,11 @@ const initState = {
   errorMsg: '',
   isLoading: false,
   isLogin: false,
+  userId: '',
 };
 
-const loginReducer = (state = initState, action) => {
-  const { errorMsg } = action.payload || {};
+const authReducer = (state = initState, action) => {
+  const { errorMsg, userId } = action.payload || {};
   switch (action.type) {
     case AuthenticateTypes.AUTH_LOGIN: {
       return {
@@ -17,16 +18,33 @@ const loginReducer = (state = initState, action) => {
     }
     case AuthenticateTypes.AUTH_LOGIN_SUCCESS: {
       return {
-        ...state,
+        ...initState,
         isLoading: false,
         isLogin: true,
+        userId,
       };
     }
     case AuthenticateTypes.AUTH_LOGIN_FAILED: {
       return {
         ...state,
         isLoading: false,
-        isLogin: false,
+        errorMsg,
+      };
+    }
+    case AuthenticateTypes.AUTH_LOGOUT: {
+      return {
+        ...state,
+        errorMsg: '',
+        isLoading: true,
+      };
+    }
+    case AuthenticateTypes.AUTH_LOGOUT_SUCCESS: {
+      return initState;
+    }
+    case AuthenticateTypes.AUTH_LOGOUT_FAILED: {
+      return {
+        ...state,
+        isLoading: false,
         errorMsg,
       };
     }
@@ -36,4 +54,4 @@ const loginReducer = (state = initState, action) => {
   }
 };
 
-export default loginReducer;
+export default authReducer;

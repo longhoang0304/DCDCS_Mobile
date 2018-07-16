@@ -13,8 +13,6 @@ class Login extends PureComponent {
     this.state = {
       username: 'crabbycrab',
       password: '1234567',
-      error: '',
-      isShow: false,
     };
   }
 
@@ -102,7 +100,7 @@ class Login extends PureComponent {
             <Button
               rounded
               backgroundColor='rgba(255, 255, 255, 0.2)'
-              onPress={() => { this.setState({ error: '', isShow: true }); this.login(); }}
+              onPress={() => this.login()}
               title='LOGIN'
             />
             <Button

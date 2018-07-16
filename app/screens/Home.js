@@ -1,12 +1,13 @@
 import moment from 'moment';
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 
 import { H1, H6, WhiteText } from '../components/Text';
 import WeatherImage from '../components/Common/WeatherImage';
 import WallpaperBackground from '../components/Common/WallpaperBackground';
 import DryerSettingDialog from '../components/Common/DryerSettingDialog';
+import LoadingDialog from '../components/Common/LoadingDialog';
 // import styles from './styles';
 
 class Home extends Component {
@@ -15,26 +16,32 @@ class Home extends Component {
     this.state = {
       date: moment().tz('Asia/Ho_Chi_Minh').format('ddd, DD MMM YYYY'),
       time: moment().tz('Asia/Ho_Chi_Minh').format('HH:mm:ss'),
-      mounted: false,
       showModal: false,
       dcState: 0,
       dryerState: 0,
       dryerMinute: 5,
     };
+    this.mounted = false;
   }
 
   componentDidMount() {
-    this.setState({ mounted: true });
+    const { getUserInfo } = this.props;
+    getUserInfo();
+    this.mounted = true;
     const intervalId = setInterval(this.updateTime.bind(this), 1000);
     this.setState({ intervalId });
   }
 
-  componentWillUnmount() {
+  clearInterval = () => {
     const { intervalId } = this.state;
     if (!intervalId) {
       clearInterval(intervalId);
-      this.setState({ mounted: false });
+      this.mounted = false;
     }
+  }
+
+  componentWillUnmount() {
+    this.clearInterval();
   }
 
   handleDC(dcState) {
@@ -89,7 +96,7 @@ class Home extends Component {
   }
 
   updateTime() {
-    const { mounted } = this.state;
+    const { mounted } = this;
     if (!mounted) return;
     this.setState({
       date: moment().tz('Asia/Ho_Chi_Minh').format('ddd, DD MMM YYYY'),
@@ -106,10 +113,13 @@ class Home extends Component {
       showModal,
       dryerMinute,
     } = this.state;
-    const { navigation } = this.props;
+    const { navigation, isLoading, info } = this.props;
 
     return (
       <WallpaperBackground>
+        <LoadingDialog isShow={isLoading} >
+          <Text style={{ fontSize: 16 }}>Gathering information</Text>
+        </LoadingDialog>
         <DryerSettingDialog
           state={dryerState}
           minute={dryerMinute}
@@ -208,7 +218,7 @@ class Home extends Component {
                 {`${Home.genGreeting()},`}
               </WhiteText>
               <H6>
-                <WhiteText>Long Hoàng</WhiteText>
+                <WhiteText>{info.fullName}</WhiteText>
               </H6>
             </TouchableOpacity>
           </View>
