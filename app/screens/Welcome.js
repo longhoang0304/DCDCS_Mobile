@@ -19,16 +19,18 @@ class Welcome extends PureComponent {
         'Cannot connect to server',
         [
           {
-            text: 'Try again', onPress: () => this.checkInternetConnection(),
+            text: 'Try again',
+            onPress: () => this.checkInternetConnection(),
           },
           {
-            text: 'Cancel', onPress: () => null,
+            text: 'Cancel',
+            onPress: () => null,
           },
         ],
       );
       return;
     }
-    if (!isLogin) {
+    if (!isLogin || healthCheck === 3) {
       navigation.navigate('LoginScreen');
       return;
     }

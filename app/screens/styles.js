@@ -45,6 +45,14 @@ const styles = StyleSheet.create({
   scrollViewBox: {
     width: '100%',
   },
+  userInfoContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#fafafa',
+  },
   helpImg: {
     height: 250,
   },

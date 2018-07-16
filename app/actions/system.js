@@ -1,5 +1,8 @@
+import decode from 'jwt-decode';
+import _ from 'lodash';
 import { SystemTypes as SysTypes } from '../constants/ActionTypes';
 import { get, post, APIUrl, getToken } from '../lib/helper';
+import AuthActions from './authenticate';
 
 /* ============= CONNECTION ACTION START ================= */
 const connecting = () => ({
@@ -13,8 +16,12 @@ const connectSuccess = (isLogin) => ({
   },
 });
 
-const connectFailed = () => ({
+const connectFailed = (errorMsg, healthCheck) => ({
   type: SysTypes.SYSTEM_CHECK_CONNECTION_FAILED,
+  payload: {
+    errorMsg,
+    healthCheck,
+  },
 });
 
 const connectToServer = () => async (dispatch) => {
@@ -30,10 +37,18 @@ const connectToServer = () => async (dispatch) => {
 
   if (res.ok) {
     const token = await getToken();
-    dispatch(connectSuccess(!!token));
-    return;
+    if (!token) {
+      dispatch(connectFailed('Your token is expired', 3));
+      return;
+    }
+    const { id } = decode(token) || {};
+    if (id && _.isString(id)) {
+      dispatch(AuthActions.loginSuccess(id));
+      dispatch(connectSuccess(!!token));
+      return;
+    }
   }
-  dispatch(connectFailed());
+  dispatch(connectFailed('Cannot connect to server', 2));
 };
 
 /* ============== CONNECTION ACTION END ================== */
