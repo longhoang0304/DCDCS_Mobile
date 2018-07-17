@@ -8,11 +8,7 @@ const initState = {
 };
 
 const connectionReducer = (state = initState, action) => {
-<<<<<<< HEAD
-  const { isLogin } = action.payload || {};
-=======
   const { isLogin, errorMsg, healthCheck } = action.payload || {};
->>>>>>> 6c04b521ee4ee2fff5f0bcb3f06512f2ebf7821d
 
   switch (action.type) {
     case SystemTypes.SYSTEM_CHECK_CONNECTION: {

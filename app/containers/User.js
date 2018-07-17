@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   getUserInfo: UserActions.getInfo,
+  updateInfo: UserActions.updateInfo,
   logout: AuthActions.logout,
 };
 

@@ -10,20 +10,20 @@ class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: '',
       newInfo: {
         username: '',
         password: '',
         email: '',
         phone: '',
         address: '',
-        products: [],
       },
     };
   }
 
   componentDidMount() {
     const { info } = this.props;
-    this.setState({ newInfo: { ...info, password: '******' } });
+    this.setState({ newInfo: { ...info, password: '' } });
   }
 
   componentDidUpdate() {
@@ -40,9 +40,57 @@ class UserInfo extends Component {
     this.setState({ newInfo: info });
   }
 
-  render() {
+  validateUsername = (username) => {
+    if (username.trim().length < 4) return 'Username must be atlease 4 characters';
+    if (username.trim().length > 32) return 'Username cannot exceed 32 characters';
+    if (!username.trim().match(/^[a-zA-Z0-9]{4,32}$/)) return 'Username can only contains a-zA-z0-9 characters';
+    return '';
+  }
+
+  validatePassword = (password) => {
+    if (password.length < 6) return 'Password must be atlease 6 characters';
+    if (password.length > 32) return 'Password cannot exceed 32 characters';
+    return '';
+  }
+
+  validateEmail = (email) => {
+    if (!email.trim().match(/^[a-zA-Z0-9-._]+@([a-zA-Z0-9-]{2,}\.){1,3}$/)) {
+      return 'Email is not valid. Example: abc@gmail.com';
+    }
+    return '';
+  }
+
+
+  validate = () => {
     const { newInfo } = this.state;
+    const { username, password, email, phone, address } = newInfo;
+    let errorMsg = this.validateUsername(username);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validatePassword(password);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validateEmail(email);
+    if (errorMsg) return errorMsg;
+    return '';
+  }
+
+  updateInfo = () => {
+    const { updateInfo } = this.props;
+    const { newInfo } = this.state;
+    const error = this.validate();
+    if (error) {
+      this.setState({ error });
+      return;
+    }
+    updateInfo(newInfo);
+  }
+
+  render() {
+    const { newInfo, error } = this.state;
     const { logout, isLoading } = this.props;
+
+    console.log(isLoading, error);
 
     return (
       <ScrollView
@@ -128,6 +176,7 @@ class UserInfo extends Component {
             textStyle={{
               color: '#fff',
             }}
+            onPress={this.updateInfo}
           />
           </View>
           <View style={{
