@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { Button, Text, Divider } from 'react-native-elements';
 import styles from './styles';
 import InfoItem from '../components/Common/InfoItem';
@@ -10,7 +10,6 @@ class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: '',
       newInfo: {
         username: '',
         password: '',
@@ -21,15 +20,30 @@ class UserInfo extends Component {
     };
   }
 
+  static alertError(errorMsg) {
+    Alert.alert(
+      'Error',
+      errorMsg,
+      [
+        {
+          text: 'OK',
+        },
+      ],
+    );
+  }
+
   componentDidMount() {
     const { info } = this.props;
     this.setState({ newInfo: { ...info, password: '' } });
   }
 
   componentDidUpdate() {
-    const { navigation, isLogin } = this.props;
+    const { navigation, isLogin, errorMsg } = this.props;
     if (!isLogin) {
       navigation.navigate('Welcome');
+    }
+    if (errorMsg) {
+      UserInfo.alertError(errorMsg);
     }
   }
 
@@ -41,7 +55,7 @@ class UserInfo extends Component {
   }
 
   validateUsername = (username) => {
-    if (username.trim().length < 4) return 'Username must be atlease 4 characters';
+    if (username.trim().length < 4) return 'Username must be at lease 4 characters';
     if (username.trim().length > 32) return 'Username cannot exceed 32 characters';
     if (!username.trim().match(/^[a-zA-Z0-9]{4,32}$/)) return 'Username can only contains a-zA-z0-9 characters';
     return '';
@@ -105,17 +119,16 @@ class UserInfo extends Component {
     const { newInfo } = this.state;
     const error = this.validate();
     if (error) {
-      this.setState({ error });
+      UserInfo.alertError(error);
       return;
     }
+    this.setState({ error: '' });
     updateInfo(newInfo);
   }
 
   render() {
-    const { newInfo, error } = this.state;
+    const { newInfo } = this.state;
     const { logout, isLoading } = this.props;
-
-    console.log(isLoading, error);
 
     return (
       <ScrollView
@@ -192,34 +205,34 @@ class UserInfo extends Component {
           <View style={{
             flex: 1,
           }}>
-          <Button
-            rounded
-            title='Save Changes'
-            buttonStyle={{
-              backgroundColor: '#006aff',
-            }}
-            textStyle={{
-              color: '#fff',
-            }}
-            onPress={this.updateInfo}
-          />
+            <Button
+              rounded
+              title='Save Changes'
+              buttonStyle={{
+                backgroundColor: '#006aff',
+              }}
+              textStyle={{
+                color: '#fff',
+              }}
+              onPress={this.updateInfo}
+            />
           </View>
           <View style={{
             flex: 1,
           }}>
-          <Button
-            rounded
-            title='Logout'
-            buttonStyle={{
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-              borderColor: '#f44245',
-              borderWidth: 1,
-            }}
-            textStyle={{
-              color: '#f44245',
-            }}
-            onPress={logout}
-          />
+            <Button
+              rounded
+              title='Logout'
+              buttonStyle={{
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: '#f44245',
+                borderWidth: 1,
+              }}
+              textStyle={{
+                color: '#f44245',
+              }}
+              onPress={logout}
+            />
           </View>
         </View>
       </ScrollView>
