@@ -34,6 +34,13 @@ class Home extends Component {
     this.setState({ intervalId });
   }
 
+  componentDidUpdate() {
+    const { updateSelection, productList, selected } = this.props;
+    if (selected < 0 && productList.length !== 0) {
+      updateSelection(0);
+    }
+  }
+
   clearInterval = () => {
     const { intervalId } = this.state;
     if (!intervalId) {
@@ -87,7 +94,8 @@ class Home extends Component {
   }
 
   handleSelection = (index) => {
-    console.log(index);
+    const { updateSelection } = this.props;
+    updateSelection(index);
     this.toggleProductDialog();
   }
 
@@ -145,13 +153,15 @@ class Home extends Component {
           isShow={showProductDialog}
           selected={selected}
           productList={productList}
+          onPress={this.handleSelection}
+          toggleDialog={this.toggleProductDialog}
         />
         <DryerSettingDialog
           state={dryerState}
           minute={dryerMinute}
           isShow={showDryerSettingDialog}
           onChange={_minute => this.setState({ dryerMinute: _minute })}
-          toggleDialog={() => this.toggleDryerSettingDialog()}
+          toggleDialog={this.toggleDryerSettingDialog}
           handleDryer={() => this.handleDryer()}
         />
         {/* =============== END POPUP DIALOG ================= */}
@@ -190,6 +200,7 @@ class Home extends Component {
               <WeatherImage />
               <WhiteText style={{ fontSize: 18 }}>{date}</WhiteText>
               <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>{time}</WhiteText>
+              <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>{productList[selected] && productList[selected].name}</WhiteText>
             </View>
           </View>
           <View style={{

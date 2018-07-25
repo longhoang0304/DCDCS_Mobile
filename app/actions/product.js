@@ -40,8 +40,16 @@ const getInfo = (productId) => async (dispatch) => {
 };
 // ============== GET USER DATA END ==============
 
+const updateSelection = (selected) => ({
+  type: ProductTypes.PRODUCT_SELECT,
+  payload: {
+    selected,
+  },
+});
+
 const ProductActions = {
   getInfo,
+  updateSelection,
 };
 
 export default ProductActions;

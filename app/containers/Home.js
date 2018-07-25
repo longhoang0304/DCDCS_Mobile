@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Home from '../screens/Home';
-import { SysActions, UserActions } from '../actions';
+import { SysActions, UserActions, ProductActions } from '../actions';
 
 const mapStateToProps = (state, ownProps) => ({
   ...state.info,
@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   getData: SysActions.getData,
   getUserInfo: UserActions.getInfo,
+  updateSelection: ProductActions.updateSelection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

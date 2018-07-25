@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ListView } from 'react-native';
+import { FlatList } from 'react-native';
 import PopupDialog, { DialogTitle } from 'react-native-popup-dialog';
-import { ListItem, FontAwesome, Text } from 'react-native-elements';
-import _ from 'lodash';
+import { ListItem, Icon } from 'react-native-elements';
+
+const keyExtractor = (item, index) => String(index);
 
 const ProductSelectDialog = (props) => {
   const {
@@ -11,9 +12,8 @@ const ProductSelectDialog = (props) => {
     onPress,
     selected,
     productList,
+    toggleDialog,
   } = props;
-
-  console.log('ABC', productList);
 
   return (
     <PopupDialog
@@ -21,25 +21,21 @@ const ProductSelectDialog = (props) => {
       show={isShow}
       width={0.85}
       height={350}
-      dismissOnTouchOutside={false}
+      onDismissed={toggleDialog}
     >
-      {!_.isEmpty(productList) ?
-      <ListView
-        dataSource={productList}
-        renderRow={
-          (rowData, sectionId, rowId) => (
-            <ListItem
-              key={rowId}
-              onPress={onPress}
-              title={rowData.name}
-              rightIcon={rowId === selected ? <FontAwesome name='check' /> : null }
-            />
-          )
-        }
-      >
-      </ListView>
-      : <Text>You don't have any device</Text>
-      }
+      <FlatList
+        data={productList}
+        extraData={selected}
+        keyExtractor={keyExtractor}
+        renderItem={({ item, index }) => (
+          <ListItem
+            onPress={() => onPress(index)}
+            title={item.name}
+            rightIcon={selected === index ? <Icon name='check' type='feather' color='#00c41d'/> : undefined}
+          />
+        )}
+      />
+
     </PopupDialog>
   );
 };
@@ -52,6 +48,7 @@ ProductSelectDialog.propTypes = {
   isShow: PropTypes.bool,
   selected: PropTypes.number,
   onPress: PropTypes.func,
+  toggleDialog: PropTypes.func,
   productList: PropTypes.array,
 };
 
