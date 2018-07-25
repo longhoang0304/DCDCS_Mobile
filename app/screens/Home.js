@@ -9,6 +9,7 @@ import WallpaperBackground from '../components/Common/WallpaperBackground';
 import DryerSettingDialog from '../components/Common/DryerSettingDialog';
 import LoadingDialog from '../components/Common/LoadingDialog';
 import ProductSelectDialog from '../components/Common/ProductSelectDialog';
+import * as RequestAction from '../constants/RequestActions';
 // import styles from './styles';
 
 class Home extends Component {
@@ -53,8 +54,16 @@ class Home extends Component {
     this.clearInterval();
   }
 
-  handleDC(dcState) {
+  handleDC = (dcState) => {
+    const { publishAction, productList, selected } = this.props;
     this.setState({ dcState });
+    if (selected < -1) {
+      return;
+    }
+    const payload = {
+      action: RequestAction.CONTROL_DC,
+    };
+    publishAction(payload, productList[selected]._id); // eslint-disable-line
   }
 
   handleDryer(dryerState) {
@@ -64,14 +73,13 @@ class Home extends Component {
 
   alertDCControl() {
     const { dcState } = this.state;
-    const $this = this;
     Alert.alert(
       'CONFIRM',
       `Do you want to ${dcState ? 'collect' : 'dry'} your clothes?`,
       [
         {
           text: 'Yes, do it',
-          onPress: () => $this.handleDC(!dcState),
+          onPress: () => this.handleDC(!dcState),
         },
         {
           text: 'No',
@@ -138,11 +146,12 @@ class Home extends Component {
       navigation,
       isLoadingUser,
       isLoadingProduct,
+      isPublishingAction,
       info,
       productList,
       selected,
     } = this.props;
-    const isLoading = isLoadingProduct || isLoadingUser;
+    const isLoading = isLoadingProduct || isLoadingUser || isPublishingAction;
 
     return (
       <WallpaperBackground>
@@ -189,6 +198,9 @@ class Home extends Component {
             >
               <H1><WhiteText>35°</WhiteText></H1>
               <H6><WhiteText>IDLING</WhiteText></H6>
+              <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
+                {productList[selected] && productList[selected].name}
+              </WhiteText>
             </View>
             <View style={{
                 flex: 1,
@@ -200,7 +212,6 @@ class Home extends Component {
               <WeatherImage />
               <WhiteText style={{ fontSize: 18 }}>{date}</WhiteText>
               <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>{time}</WhiteText>
-              <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>{productList[selected] && productList[selected].name}</WhiteText>
             </View>
           </View>
           <View style={{

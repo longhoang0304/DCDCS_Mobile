@@ -3,7 +3,7 @@ import _ from 'lodash';
 import DB from './localDb';
 
 const APIUrl = (api) => `https://dcdcs-api.herokuapp.com/api/${api}`;
-// const APIUrl = (api) => `https://192.168.139.1/api/${api}`;
+// const APIUrl = (api) => `http://192.168.1.107:3000/api/${api}`;
 
 const getToken = async () => {
   try {

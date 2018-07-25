@@ -78,16 +78,16 @@ const publishFailed = (errorMsg) => ({
   },
 });
 
-const publishAction = (payload, to) => async (dispatch, getStore) => {
+const publishAction = (payload, receiverId) => async (dispatch, getStore) => {
   dispatch(publishing());
-  const store = getStore().auth;
-  const { userId } = store;
+  const { auth } = getStore();
+  const { userId } = auth;
   let res;
   const pl = {
     payload,
     to: {
-      receiverId: to,
-      deviceId: to,
+      receiverId,
+      deviceId: receiverId,
     },
     from: {
       senderId: userId,
@@ -95,8 +95,10 @@ const publishAction = (payload, to) => async (dispatch, getStore) => {
     },
   };
 
+  console.log(pl);
+
   try {
-    res = await post(APIUrl('actions'), false, pl);
+    res = await post(APIUrl('actions'), true, pl);
   } catch (error) {
     console.log(error.message);
     dispatch(publishFailed());
