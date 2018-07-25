@@ -13,7 +13,6 @@ const DryerSettingDialog = (props) => {
   return (
     <PopupDialog
       dialogTitle={<DialogTitle title='Dryer setting' />}
-      ref={(popupDialog) => { this.popupDialog = popupDialog; }}
       show={isShow}
       width={0.85}
       height={250}

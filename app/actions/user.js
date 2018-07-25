@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { Alert } from 'react-native';
 import { UserTypes } from '../constants/ActionTypes';
 import { get, put, APIUrl } from '../lib/helper';
+import { ProductActions } from '../actions';
 import DB from '../lib/localDb';
 
 // ============== GET USER DATA START ==============
@@ -34,6 +35,9 @@ const getInfo = () => async (dispatch, getStore) => {
     const json = await res.json();
     if (res.ok) {
       dispatch(getDataSuccess(json));
+      _.forEach(json.products, (product) => {
+        dispatch(ProductActions.getInfo(product.productId));
+      });
       return;
     }
     const { message } = json;

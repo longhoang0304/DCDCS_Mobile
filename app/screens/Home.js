@@ -8,6 +8,7 @@ import WeatherImage from '../components/Common/WeatherImage';
 import WallpaperBackground from '../components/Common/WallpaperBackground';
 import DryerSettingDialog from '../components/Common/DryerSettingDialog';
 import LoadingDialog from '../components/Common/LoadingDialog';
+import ProductSelectDialog from '../components/Common/ProductSelectDialog';
 // import styles from './styles';
 
 class Home extends Component {
@@ -16,12 +17,11 @@ class Home extends Component {
     this.state = {
       date: moment().tz('Asia/Ho_Chi_Minh').format('ddd, DD MMM YYYY'),
       time: moment().tz('Asia/Ho_Chi_Minh').format('HH:mm:ss'),
-      showModal: false,
-      showCombobox: false,
+      showDryerSettingDialog: false,
+      showProductDialog: false,
       dcState: 0,
       dryerState: 0,
       dryerMinute: 5,
-      selected: '',
     };
     this.mounted = false;
   }
@@ -52,7 +52,7 @@ class Home extends Component {
 
   handleDryer(dryerState) {
     this.setState({ dryerState });
-    this.toggleModal();
+    this.toggleDryerSettingDialog();
   }
 
   alertDCControl() {
@@ -76,9 +76,19 @@ class Home extends Component {
     );
   }
 
-  toggleModal() {
-    const { showModal } = this.state;
-    this.setState({ showModal: !showModal });
+  toggleDryerSettingDialog = () => {
+    const { showDryerSettingDialog } = this.state;
+    this.setState({ showDryerSettingDialog: !showDryerSettingDialog });
+  }
+
+  toggleProductDialog = () => {
+    const { showProductDialog } = this.state;
+    this.setState({ showProductDialog: !showProductDialog });
+  }
+
+  handleSelection = (index) => {
+    console.log(index);
+    this.toggleProductDialog();
   }
 
   static genGreeting() {
@@ -112,22 +122,36 @@ class Home extends Component {
       time,
       dcState,
       dryerState,
-      showModal,
       dryerMinute,
+      showProductDialog,
+      showDryerSettingDialog,
     } = this.state;
-    const { navigation, isLoading, info } = this.props;
+    const {
+      navigation,
+      isLoadingUser,
+      isLoadingProduct,
+      info,
+      productList,
+      selected,
+    } = this.props;
+    const isLoading = isLoadingProduct || isLoadingUser;
 
     return (
       <WallpaperBackground>
         <LoadingDialog isShow={isLoading} >
           <Text style={{ fontSize: 16 }}>Gathering information</Text>
         </LoadingDialog>
+        <ProductSelectDialog
+          isShow={showProductDialog}
+          selected={selected}
+          productList={productList}
+        />
         <DryerSettingDialog
           state={dryerState}
           minute={dryerMinute}
-          isShow={showModal}
+          isShow={showDryerSettingDialog}
           onChange={_minute => this.setState({ dryerMinute: _minute })}
-          toggleDialog={() => this.toggleModal()}
+          toggleDialog={() => this.toggleDryerSettingDialog()}
           handleDryer={() => this.handleDryer()}
         />
         {/* =============== END POPUP DIALOG ================= */}
@@ -202,7 +226,7 @@ class Home extends Component {
                 }}
                 rounded={true}
                 title='Dryer setting'
-                onPress={() => this.toggleModal()}
+                onPress={() => this.toggleDryerSettingDialog()}
               />
               <Button
                 buttonStyle={{
@@ -211,8 +235,8 @@ class Home extends Component {
                   marginVertical: 0,
                 }}
                 rounded={true}
-                title={`${dcState ? 'Collect' : 'Dry'} clothes`}
-                onPress={() => this.alertDCControl()}
+                title='Change device'
+                onPress={() => this.toggleProductDialog()}
               />
             </View>
             <View

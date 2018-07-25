@@ -1,5 +1,6 @@
 import decode from 'jwt-decode';
 import _ from 'lodash';
+import Expo from 'expo';
 import { SystemTypes as SysTypes } from '../constants/ActionTypes';
 import { get, post, APIUrl, getToken } from '../lib/helper';
 import AuthActions from './authenticate';
@@ -77,11 +78,25 @@ const publishFailed = (errorMsg) => ({
   },
 });
 
-const publishAction = (payload) => async (dispatch) => {
+const publishAction = (payload, to) => async (dispatch, getStore) => {
   dispatch(publishing());
+  const store = getStore().auth;
+  const { userId } = store;
   let res;
+  const pl = {
+    payload,
+    to: {
+      receiverId: to,
+      deviceId: to,
+    },
+    from: {
+      senderId: userId,
+      deviceId: Expo.Constants.deviceId,
+    },
+  };
+
   try {
-    res = await post(APIUrl('actions'), false, payload);
+    res = await post(APIUrl('actions'), false, pl);
   } catch (error) {
     console.log(error.message);
     dispatch(publishFailed());

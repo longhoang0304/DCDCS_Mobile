@@ -31,4 +31,11 @@ const SystemTypes = {
   SYSTEM_GET_DATA_FAILED: 'SYSTEM_GET_DATA_FAILED',
 };
 
-export { AuthenticateTypes, UserTypes, SystemTypes };
+const ProductTypes = {
+  PRODUCT_GET_INFO: 'PRODUCT_GET_INFORMATION',
+  PRODUCT_GET_INFO_SUCCESS: 'PRODUCT_GET_INFORMATION_SUCCESS',
+  PRODUCT_GET_INFO_FAILED: 'PRODUCT_GET_INFORMATION_FAILED',
+  PRODUCT_SELECT: 'PRODUCT_SELECT',
+};
+
+export { AuthenticateTypes, UserTypes, SystemTypes, ProductTypes };

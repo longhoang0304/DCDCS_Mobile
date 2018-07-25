@@ -5,6 +5,9 @@ import { SysActions, UserActions } from '../actions';
 const mapStateToProps = (state, ownProps) => ({
   ...state.info,
   ...state.user,
+  ...state.products,
+  isLoadingUser: state.user.isLoading,
+  isLoadingProduct: state.products.isLoading,
   ...ownProps,
 });
 

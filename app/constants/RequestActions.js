@@ -1,0 +1,11 @@
+const REQUEST_DATA = 0;
+const CONTROL_DC = 1;
+const CONTROL_DRYER = 2;
+const SET_DRYER_TIMER = 3;
+
+export {
+  REQUEST_DATA,
+  CONTROL_DC,
+  CONTROL_DRYER,
+  SET_DRYER_TIMER,
+};
