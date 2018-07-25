@@ -48,22 +48,41 @@ class UserInfo extends Component {
   }
 
   validatePassword = (password) => {
+    if (!password.length) return '';
     if (password.length < 6) return 'Password must be atlease 6 characters';
     if (password.length > 32) return 'Password cannot exceed 32 characters';
     return '';
   }
 
   validateEmail = (email) => {
-    if (!email.trim().match(/^[a-zA-Z0-9-._]+@([a-zA-Z0-9-]{2,}\.){1,3}$/)) {
+    if (!email.trim().match(/^[^\s@]+@([^\s@]{2,}\.){1,2}[^\s]{2,}$/)) {
       return 'Email is not valid. Example: abc@gmail.com';
     }
     return '';
   }
 
+  validatePhone = (phone) => {
+    if (!phone.trim().length) return '';
+    if (!phone.trim().match(/^\d{6,}$/)) {
+      return 'Invalid phone number';
+    }
+    return '';
+  }
+
+  validateAddress = (address) => {
+    if (!address.trim().length) return '';
+    if (!address.trim().match(/^[\d\w\p{L}\p{Nd}\s]+$/)) {
+      return 'Invalid address';
+    }
+    return '';
+  }
 
   validate = () => {
     const { newInfo } = this.state;
-    const { username, password, email, phone, address } = newInfo;
+    const {
+      username, password,
+      email, phone, address,
+    } = newInfo;
     let errorMsg = this.validateUsername(username);
     if (errorMsg) return errorMsg;
 
@@ -71,6 +90,12 @@ class UserInfo extends Component {
     if (errorMsg) return errorMsg;
 
     errorMsg = this.validateEmail(email);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validatePhone(phone);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validateAddress(address);
     if (errorMsg) return errorMsg;
     return '';
   }
@@ -97,7 +122,7 @@ class UserInfo extends Component {
         contentContainerStyle={styles.userInfoContainer}
       >
         <LoadingDialog isShow={isLoading} >
-          <Text style={{ fontSize: 16 }}>Goodbye!</Text>
+          <Text style={{ fontSize: 16 }}>Updating Information!</Text>
         </LoadingDialog>
         <View style={{
           flex: 1,

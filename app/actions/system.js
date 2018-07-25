@@ -41,8 +41,7 @@ const connectToServer = () => async (dispatch) => {
       dispatch(connectFailed('Your token is expired', 3));
       return;
     }
-    const { id, password } = decode(token) || {};
-    console.log(password, token);
+    const { id } = decode(token) || {};
     if (id && _.isString(id)) {
       dispatch(AuthActions.loginSuccess(id));
       dispatch(connectSuccess(!!token));
