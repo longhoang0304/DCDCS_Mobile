@@ -222,10 +222,13 @@ class Home extends Component {
                 paddingRight: 15,
               }}
             >
-              <View />
+              <View style={{
+                flexGrow: 2,
+              }}/>
               <TouchableOpacity
                 style={{
                   flex: 1,
+                  flexGrow: 1,
                   justifyContent: 'flex-end',
                   alignItems: 'flex-end',
                 }}

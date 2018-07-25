@@ -77,11 +77,11 @@ const publishFailed = (errorMsg) => ({
   },
 });
 
-const publishAction = (action) => async (dispatch) => {
+const publishAction = (payload) => async (dispatch) => {
   dispatch(publishing());
   let res;
   try {
-    res = await post(APIUrl('actions'), false, action);
+    res = await post(APIUrl('actions'), false, payload);
   } catch (error) {
     console.log(error.message);
     dispatch(publishFailed());

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { Button, Text, Divider } from 'react-native-elements';
 import styles from './styles';
 import InfoItem from '../components/Common/InfoItem';
@@ -16,20 +16,34 @@ class UserInfo extends Component {
         email: '',
         phone: '',
         address: '',
-        products: [],
       },
     };
   }
 
+  static alertError(errorMsg) {
+    Alert.alert(
+      'Error',
+      errorMsg,
+      [
+        {
+          text: 'OK',
+        },
+      ],
+    );
+  }
+
   componentDidMount() {
     const { info } = this.props;
-    this.setState({ newInfo: { ...info, password: '******' } });
+    this.setState({ newInfo: { ...info, password: '' } });
   }
 
   componentDidUpdate() {
-    const { navigation, isLogin } = this.props;
+    const { navigation, isLogin, errorMsg } = this.props;
     if (!isLogin) {
       navigation.navigate('Welcome');
+    }
+    if (errorMsg) {
+      UserInfo.alertError(errorMsg);
     }
   }
 
@@ -38,6 +52,78 @@ class UserInfo extends Component {
     const info = { ...newInfo };
     info[key] = value;
     this.setState({ newInfo: info });
+  }
+
+  validateUsername = (username) => {
+    if (username.trim().length < 4) return 'Username must be at lease 4 characters';
+    if (username.trim().length > 32) return 'Username cannot exceed 32 characters';
+    if (!username.trim().match(/^[a-zA-Z0-9]{4,32}$/)) return 'Username can only contains a-zA-z0-9 characters';
+    return '';
+  }
+
+  validatePassword = (password) => {
+    if (!password.length) return '';
+    if (password.length < 6) return 'Password must be atlease 6 characters';
+    if (password.length > 32) return 'Password cannot exceed 32 characters';
+    return '';
+  }
+
+  validateEmail = (email) => {
+    if (!email.trim().match(/^[^\s@]+@([^\s@]{2,}\.){1,2}[^\s]{2,}$/)) {
+      return 'Email is not valid. Example: abc@gmail.com';
+    }
+    return '';
+  }
+
+  validatePhone = (phone) => {
+    if (!phone.trim().length) return '';
+    if (!phone.trim().match(/^\d{6,}$/)) {
+      return 'Invalid phone number';
+    }
+    return '';
+  }
+
+  validateAddress = (address) => {
+    if (!address.trim().length) return '';
+    if (!address.trim().match(/^[\d\w\p{L}\p{Nd}\s]+$/)) {
+      return 'Invalid address';
+    }
+    return '';
+  }
+
+  validate = () => {
+    const { newInfo } = this.state;
+    const {
+      username, password,
+      email, phone, address,
+    } = newInfo;
+    let errorMsg = this.validateUsername(username);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validatePassword(password);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validateEmail(email);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validatePhone(phone);
+    if (errorMsg) return errorMsg;
+
+    errorMsg = this.validateAddress(address);
+    if (errorMsg) return errorMsg;
+    return '';
+  }
+
+  updateInfo = () => {
+    const { updateInfo } = this.props;
+    const { newInfo } = this.state;
+    const error = this.validate();
+    if (error) {
+      UserInfo.alertError(error);
+      return;
+    }
+    this.setState({ error: '' });
+    updateInfo(newInfo);
   }
 
   render() {
@@ -49,7 +135,7 @@ class UserInfo extends Component {
         contentContainerStyle={styles.userInfoContainer}
       >
         <LoadingDialog isShow={isLoading} >
-          <Text style={{ fontSize: 16 }}>Goodbye!</Text>
+          <Text style={{ fontSize: 16 }}>Updating Information!</Text>
         </LoadingDialog>
         <View style={{
           flex: 1,
@@ -119,33 +205,34 @@ class UserInfo extends Component {
           <View style={{
             flex: 1,
           }}>
-          <Button
-            rounded
-            title='Save Changes'
-            buttonStyle={{
-              backgroundColor: '#006aff',
-            }}
-            textStyle={{
-              color: '#fff',
-            }}
-          />
+            <Button
+              rounded
+              title='Save Changes'
+              buttonStyle={{
+                backgroundColor: '#006aff',
+              }}
+              textStyle={{
+                color: '#fff',
+              }}
+              onPress={this.updateInfo}
+            />
           </View>
           <View style={{
             flex: 1,
           }}>
-          <Button
-            rounded
-            title='Logout'
-            buttonStyle={{
-              backgroundColor: 'rgba(0, 0, 0, 0)',
-              borderColor: '#f44245',
-              borderWidth: 1,
-            }}
-            textStyle={{
-              color: '#f44245',
-            }}
-            onPress={logout}
-          />
+            <Button
+              rounded
+              title='Logout'
+              buttonStyle={{
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                borderColor: '#f44245',
+                borderWidth: 1,
+              }}
+              textStyle={{
+                color: '#f44245',
+              }}
+              onPress={logout}
+            />
           </View>
         </View>
       </ScrollView>

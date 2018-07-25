@@ -4,12 +4,13 @@ import { UserActions, AuthActions } from '../actions';
 
 const mapStateToProps = (state, ownProps) => ({
   ...ownProps,
-  ...state.auth,
-  info: state.user.info,
+  isLogin: state.auth.isLogin,
+  ...state.user,
 });
 
 const mapDispatchToProps = {
   getUserInfo: UserActions.getInfo,
+  updateInfo: UserActions.updateInfo,
   logout: AuthActions.logout,
 };
 
