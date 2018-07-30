@@ -1,8 +1,9 @@
 import decode from 'jwt-decode';
 import _ from 'lodash';
 import Expo from 'expo';
+
 import { SystemTypes as SysTypes } from '../constants/ActionTypes';
-import { get, post, APIUrl, getToken } from '../lib/helper';
+import { get, post, APIUrl, getToken, alertError } from '../lib/helper';
 import AuthActions from './authenticate';
 
 /* ============= CONNECTION ACTION START ================= */
@@ -31,8 +32,7 @@ const connectToServer = () => async (dispatch) => {
   try {
     res = await get(APIUrl('health-check'), false);
   } catch (error) {
-    console.log(error.message);
-    dispatch(connectFailed());
+    dispatch(connectFailed(error.message));
     return;
   }
 
@@ -56,7 +56,7 @@ const connectToServer = () => async (dispatch) => {
 
 /* =============== PUBLISH ACTION START ================== */
 const publishing = () => ({
-  type: SysTypes.SYSTEM_CHECK_CONNECTION,
+  type: SysTypes.SYSTEM_PUBLISH_ACTION,
   payload: {
     isSent: false,
     errorMsg: '',
@@ -64,7 +64,7 @@ const publishing = () => ({
 });
 
 const publishSuccess = (isSent) => ({
-  type: SysTypes.SYSTEM_CHECK_CONNECTION_SUCCESS,
+  type: SysTypes.SYSTEM_PUBLISH_ACTION_SUCCESS,
   payload: {
     isSent,
     errorMsg: '',
@@ -72,16 +72,24 @@ const publishSuccess = (isSent) => ({
 });
 
 const publishFailed = (errorMsg) => ({
-  type: SysTypes.SYSTEM_CHECK_CONNECTION_FAILED,
+  type: SysTypes.SYSTEM_PUBLISH_ACTION_FAILED,
   payload: {
     errorMsg,
   },
 });
 
-const publishAction = (payload, receiverId) => async (dispatch, getStore) => {
+const publishAction = (payload) => async (dispatch, getStore) => {
   dispatch(publishing());
-  const { auth } = getStore();
+  const { auth, products } = getStore();
   const { userId } = auth;
+  const { selected, productList } = products;
+  if (selected < 0) {
+    const errorMsg = 'You don\'t have any devices';
+    dispatch(publishFailed(errorMsg));
+    alertError(errorMsg);
+    return;
+  }
+  const receiverId = productList[selected]._id; // eslint-disable-line
   let res;
   const pl = {
     payload,
@@ -95,21 +103,19 @@ const publishAction = (payload, receiverId) => async (dispatch, getStore) => {
     },
   };
 
-  console.log(pl);
-
   try {
     res = await post(APIUrl('actions'), true, pl);
+    if (res.ok) {
+      dispatch(publishSuccess(true));
+      return;
+    }
+    const json = await res.json();
+    dispatch(publishFailed(json.message));
+    alertError(json.message);
   } catch (error) {
-    console.log(error.message);
-    dispatch(publishFailed());
-    return;
+    dispatch(publishFailed(error.message));
+    alertError(error.message);
   }
-
-  if (res.ok) {
-    dispatch(publishSuccess(true));
-    return;
-  }
-  dispatch(publishFailed());
 };
 /* ================ PUBLISH ACTION END =================== */
 

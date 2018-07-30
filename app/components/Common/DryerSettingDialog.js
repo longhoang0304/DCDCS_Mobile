@@ -67,7 +67,7 @@ const DryerSettingDialog = (props) => {
           alignItems: 'flex-end',
         }}>
           <TouchableOpacity
-            onPress={() => handleDryer()}
+            onPress={() => handleDryer(minute)}
             style={{
               width: '50%',
               borderTopWidth: 1,

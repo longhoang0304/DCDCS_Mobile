@@ -55,19 +55,21 @@ class Home extends Component {
   }
 
   handleDC = (dcState) => {
-    const { publishAction, productList, selected } = this.props;
+    const { publishAction } = this.props;
     this.setState({ dcState });
-    if (selected < -1) {
-      return;
-    }
     const payload = {
       action: RequestAction.CONTROL_DC,
     };
-    publishAction(payload, productList[selected]._id); // eslint-disable-line
+    publishAction(payload); // eslint-disable-line
   }
 
-  handleDryer(dryerState) {
-    this.setState({ dryerState });
+  handleDryer = (timer) => {
+    const { publishAction } = this.props;
+    const payload = {
+      action: RequestAction.CONTROL_DRYER,
+      timer,
+    };
+    publishAction(payload); // eslint-disable-line
     this.toggleDryerSettingDialog();
   }
 
@@ -171,7 +173,7 @@ class Home extends Component {
           isShow={showDryerSettingDialog}
           onChange={_minute => this.setState({ dryerMinute: _minute })}
           toggleDialog={this.toggleDryerSettingDialog}
-          handleDryer={() => this.handleDryer()}
+          handleDryer={(timer) => this.handleDryer(timer)}
         />
         {/* =============== END POPUP DIALOG ================= */}
         <View style={{

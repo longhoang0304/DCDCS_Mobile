@@ -1,5 +1,6 @@
 import 'whatwg-fetch-timeout';
 import _ from 'lodash';
+import { Alert } from 'react-native';
 import DB from './localDb';
 
 const APIUrl = (api) => `https://dcdcs-api.herokuapp.com/api/${api}`;
@@ -59,5 +60,17 @@ const post = genHttpMethod('post');
 const put = genHttpMethod('put');
 const del = genHttpMethod('delete');
 
+const alertError = (msg) => {
+  Alert.alert(
+    'Success',
+    msg,
+    [
+      {
+        text: 'OK',
+        onPress: () => null,
+      },
+    ],
+  );
+};
 
-export { getToken, APIUrl, get, post, put, del };
+export { getToken, APIUrl, get, post, put, del, alertError };
