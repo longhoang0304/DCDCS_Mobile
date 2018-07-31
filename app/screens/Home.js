@@ -10,6 +10,7 @@ import DryerSettingDialog from '../components/Common/DryerSettingDialog';
 import LoadingDialog from '../components/Common/LoadingDialog';
 import ProductSelectDialog from '../components/Common/ProductSelectDialog';
 import * as RequestAction from '../constants/RequestActions';
+import { getStateName } from '../constants/SystemState';
 // import styles from './styles';
 
 class Home extends Component {
@@ -24,30 +25,40 @@ class Home extends Component {
       dryerState: 0,
       dryerMinute: 5,
     };
-    this.mounted = false;
+    this.getDataId = null;
+    this.requestDataId = null;
+    this.timeId = null;
   }
 
   componentDidMount() {
     const { getUserInfo } = this.props;
     getUserInfo();
-    this.mounted = true;
-    const intervalId = setInterval(this.updateTime.bind(this), 1000);
-    this.setState({ intervalId });
+    this.timeId = setInterval(this.updateTime.bind(this), 1000);
   }
 
   componentDidUpdate() {
-    const { updateSelection, productList, selected } = this.props;
+    const {
+      updateSelection,
+      productList,
+      selected,
+      getData,
+      publishAction,
+    } = this.props;
     if (selected < 0 && productList.length !== 0) {
+      const payload = {
+        action: RequestAction.REQUEST_DATA,
+      };
       updateSelection(0);
+      this.getDataId = setInterval(getData, 10000);
+      this.requestDataId = setInterval(() => publishAction(payload), 10000);
     }
   }
 
   clearInterval = () => {
-    const { intervalId } = this.state;
-    if (!intervalId) {
-      clearInterval(intervalId);
-      this.mounted = false;
-    }
+    const { getDataId, requestDataId, timeId } = this;
+    clearInterval(getDataId);
+    clearInterval(requestDataId);
+    clearImmediate(timeId);
   }
 
   componentWillUnmount() {
@@ -145,13 +156,18 @@ class Home extends Component {
       showDryerSettingDialog,
     } = this.state;
     const {
+      info,
+      isRain,
+      isCloud,
+      // humidity,
+      sysState,
+      selected,
       navigation,
+      productList,
+      temperature,
       isLoadingUser,
       isLoadingProduct,
       isPublishingAction,
-      info,
-      productList,
-      selected,
     } = this.props;
     const isLoading = isLoadingProduct || isLoadingUser || isPublishingAction;
 
@@ -198,8 +214,8 @@ class Home extends Component {
                 alignItems: 'flex-start',
               }}
             >
-              <H1><WhiteText>35°</WhiteText></H1>
-              <H6><WhiteText>IDLING</WhiteText></H6>
+              <H1><WhiteText>{temperature ? `${temperature}°` : 'N/A'}</WhiteText></H1>
+              <H6><WhiteText>{getStateName(sysState)}</WhiteText></H6>
               <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
                 {productList[selected] && productList[selected].name}
               </WhiteText>
@@ -211,7 +227,7 @@ class Home extends Component {
                 alignItems: 'flex-end',
               }}
             >
-              <WeatherImage />
+              <WeatherImage isRain={isRain} isCloud={isCloud}/>
               <WhiteText style={{ fontSize: 18 }}>{date}</WhiteText>
               <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>{time}</WhiteText>
             </View>

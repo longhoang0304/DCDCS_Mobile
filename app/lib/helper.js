@@ -51,7 +51,6 @@ const request = async (url, method, useToken, body) => {
 const genHttpMethod = (methodName) =>
   async (url, useToken, body) => {
     const res = await request(url, methodName.toUpperCase(), useToken, body);
-    if (res.status === 404) throw new Error('API not found!');
     return res;
   };
 

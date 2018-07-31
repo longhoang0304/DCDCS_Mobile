@@ -13,8 +13,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  getData: SysActions.getData,
   publishAction: SysActions.publishAction,
+  getData: SysActions.getDataAction,
   getUserInfo: UserActions.getInfo,
   updateSelection: ProductActions.updateSelection,
 };

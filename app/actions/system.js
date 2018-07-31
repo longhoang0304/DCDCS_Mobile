@@ -5,6 +5,7 @@ import Expo from 'expo';
 import { SystemTypes as SysTypes } from '../constants/ActionTypes';
 import { get, post, APIUrl, getToken, alertError } from '../lib/helper';
 import AuthActions from './authenticate';
+import * as RequestAction from '../constants/RequestActions';
 
 /* ============= CONNECTION ACTION START ================= */
 const connecting = () => ({
@@ -120,11 +121,57 @@ const publishAction = (payload) => async (dispatch, getStore) => {
 /* ================ PUBLISH ACTION END =================== */
 
 /* ================== GET DATA START ===================== */
+const gettingData = () => ({
+  type: SysTypes.SYSTEM_GET_DATA,
+  payload: {
+    errorMsg: '',
+  },
+});
+
+const getDataSuccess = (data) => ({
+  type: SysTypes.SYSTEM_GET_DATA_SUCCESS,
+  payload: {
+    ...data,
+    errorMsg: '',
+  },
+});
+
+const getDataFailed = (errorMsg) => ({
+  type: SysTypes.SYSTEM_GET_DATA_FAILED,
+  payload: {
+    errorMsg,
+  },
+});
+
+const getDataAction = () => async (dispatch) => {
+  dispatch(gettingData());
+  try {
+    const res = await get(APIUrl(`actions/${Expo.Constants.deviceId}`), true);
+    const json = await res.json();
+    if (res.status === 404) {
+      dispatch(getDataFailed(''));
+      return;
+    }
+    if (res.ok) {
+      const { action, data } = json.payload || {};
+      if (action === RequestAction.UPDATE_INFO) {
+        dispatch(getDataSuccess(data));
+      }
+      return;
+    }
+    dispatch(getDataFailed(json.message));
+    alertError(json.message);
+  } catch (error) {
+    dispatch(getDataFailed(error.message));
+    alertError(error.message);
+  }
+};
 /* =================== GET DATA END ====================== */
 
 const SystemActions = {
   connectToServer,
   publishAction,
+  getDataAction,
 };
 
 export default SystemActions;

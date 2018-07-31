@@ -4,6 +4,8 @@ import * as SystemState from '../constants/SystemState';
 const initState = {
   sysState: SystemState.UNKNOWN,
   oldState: SystemState.UNKNOWN,
+  isRain: false,
+  isCloud: false,
   temperature: 0,
   humidity: 0,
   dryingTime: 0,
