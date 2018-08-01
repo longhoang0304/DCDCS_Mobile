@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import DB from './localDb';
 
 const APIUrl = (api) => `https://dcdcs-api.herokuapp.com/api/${api}`;
-// const APIUrl = (api) => `http://192.168.1.107:3000/api/${api}`;
+// const APIUrl = (api) => `http://192.168.1.103:3000/api/${api}`;
 
 const getToken = async () => {
   try {

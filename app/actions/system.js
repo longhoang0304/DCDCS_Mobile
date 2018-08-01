@@ -94,10 +94,7 @@ const publishAction = (payload) => async (dispatch, getStore) => {
   let res;
   const pl = {
     payload,
-    to: {
-      receiverId,
-      deviceId: receiverId,
-    },
+    to: receiverId,
     from: {
       senderId: userId,
       deviceId: Expo.Constants.deviceId,

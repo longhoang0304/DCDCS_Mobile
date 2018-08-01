@@ -49,8 +49,8 @@ class Home extends Component {
         action: RequestAction.REQUEST_DATA,
       };
       updateSelection(0);
-      this.getDataId = setInterval(getData, 10000);
-      this.requestDataId = setInterval(() => publishAction(payload), 10000);
+      this.getDataId = setInterval(getData, 1000);
+      this.requestDataId = setInterval(() => publishAction(payload), 1000);
     }
   }
 
