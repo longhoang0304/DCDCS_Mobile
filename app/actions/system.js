@@ -112,7 +112,7 @@ const publishAction = (payload) => async (dispatch, getStore) => {
     alertError(json.message);
   } catch (error) {
     dispatch(publishFailed(error.message));
-    alertError(error.message);
+    // alertError(error.message);
   }
 };
 /* ================ PUBLISH ACTION END =================== */
@@ -160,7 +160,7 @@ const getDataAction = () => async (dispatch) => {
     alertError(json.message);
   } catch (error) {
     dispatch(getDataFailed(error.message));
-    alertError(error.message);
+    // alertError(error.message);
   }
 };
 /* =================== GET DATA END ====================== */
