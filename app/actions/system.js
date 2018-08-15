@@ -79,7 +79,7 @@ const publishFailed = (errorMsg) => ({
   },
 });
 
-const publishAction = (payload) => async (dispatch, getStore) => {
+const publishAction = (payload, priority = 0) => async (dispatch, getStore) => {
   dispatch(publishing());
   const { auth, products } = getStore();
   const { userId } = auth;
@@ -99,6 +99,7 @@ const publishAction = (payload) => async (dispatch, getStore) => {
       senderId: userId,
       deviceId: Expo.Constants.deviceId,
     },
+    priority,
   };
 
   try {
