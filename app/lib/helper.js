@@ -61,7 +61,7 @@ const del = genHttpMethod('delete');
 
 const alertError = (msg) => {
   Alert.alert(
-    'Success',
+    'Error',
     msg,
     [
       {

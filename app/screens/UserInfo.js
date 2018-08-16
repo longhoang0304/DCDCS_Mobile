@@ -41,6 +41,7 @@ class UserInfo extends Component {
     const { navigation, isLogin, errorMsg } = this.props;
     if (!isLogin) {
       navigation.navigate('Welcome');
+      return;
     }
     if (errorMsg) {
       UserInfo.alertError(errorMsg);

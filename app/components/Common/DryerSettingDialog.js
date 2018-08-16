@@ -33,7 +33,8 @@ const DryerSettingDialog = (props) => {
         }}>
           <Text h3 style={{
             color: '#444',
-          }}>Drying time: {minute}m</Text>
+          }}>{state ? 'Dryer' : 'Drying'} time: {minute}m</Text>
+          {state ? null :
           <Slider
             value={minute}
             maximumValue={120}
@@ -55,9 +56,12 @@ const DryerSettingDialog = (props) => {
             minimumTrackTintColor='#4298f4'
             // maximumTrackTintColor='blue'
           />
-          <Text style={{
-            color: '#444',
-          }}>Please set up the time you want to dry your clothes</Text>
+          }
+          {state ? null :
+            <Text style={{
+              color: '#444',
+            }}>Please set up the time you want to dry your clothes</Text>
+          }
         </View>
         <View style={{
           flex: 1,

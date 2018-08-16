@@ -76,11 +76,13 @@ class Home extends Component {
 
   handleDryer = (timer) => {
     const { publishAction } = this.props;
+    const { dryerState } = this.state;
     const payload = {
       action: RequestAction.CONTROL_DRYER,
       timer,
     };
     publishAction(payload); // eslint-disable-line
+    this.setState({ dryerState: !dryerState });
     this.toggleDryerSettingDialog();
   }
 
@@ -216,6 +218,11 @@ class Home extends Component {
             >
               <H1><WhiteText>{temperature ? `${temperature}°` : 'N/A'}</WhiteText></H1>
               <H6><WhiteText>{getStateName(sysState)}</WhiteText></H6>
+              {dryerState ?
+                <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
+                Drying Time: {dryerMinute}m
+              </WhiteText>
+              : null}
               <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
                 {productList[selected] && productList[selected].name}
               </WhiteText>
