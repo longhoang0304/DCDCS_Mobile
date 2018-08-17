@@ -59,6 +59,13 @@ const userReducer = (state = initState, action) => {
         ...action.payload,
       };
     }
+    case UserTypes.USER_CLEAR_ERROR: {
+      return {
+        ...state,
+        isLoading: false,
+        ...action.payload,
+      };
+    }
     default: {
       return state;
     }

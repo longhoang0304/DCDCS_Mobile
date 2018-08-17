@@ -100,9 +100,18 @@ const updateInfo = (nUser) => async (dispatch, getStore) => {
   }
 };
 // ============== UPDATE USER DATA END ==============
+
+const clearError = () => ({
+  type: UserTypes.USER_CLEAR_ERROR,
+  payload: {
+    errorMsg: '',
+  },
+});
+
 const UserActions = {
   getInfo,
   updateInfo,
+  clearError,
 };
 
 export default UserActions;

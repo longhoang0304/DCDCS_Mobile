@@ -6,9 +6,9 @@ const initState = {
   oldState: SystemState.UNKNOWN,
   isRain: false,
   isCloud: false,
-  temperature: 0,
-  humidity: 0,
-  dryingTime: 0,
+  temperature: null,
+  humidity: null,
+  dryingTime: null,
   errorMsg: '',
   isSent: false,
 };

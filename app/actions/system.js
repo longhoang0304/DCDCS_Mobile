@@ -6,6 +6,7 @@ import { SystemTypes as SysTypes } from '../constants/ActionTypes';
 import { get, post, APIUrl, getToken, alertError } from '../lib/helper';
 import AuthActions from './authenticate';
 import * as RequestAction from '../constants/RequestActions';
+import * as SystemState from '../constants/SystemState';
 
 /* ============= CONNECTION ACTION START ================= */
 const connecting = () => ({
@@ -138,6 +139,10 @@ const getDataFailed = (errorMsg) => ({
   type: SysTypes.SYSTEM_GET_DATA_FAILED,
   payload: {
     errorMsg,
+    temperature: null,
+    humidity: null,
+    dryingTime: null,
+    sysState: SystemState.UNKNOWN,
   },
 });
 

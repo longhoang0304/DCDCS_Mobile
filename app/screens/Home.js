@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Alert } from 'react-native';
 import { Button, Text } from 'react-native-elements';
+import _ from 'lodash';
 
 import { H1, H6, WhiteText } from '../components/Text';
 import WeatherImage from '../components/Common/WeatherImage';
@@ -49,8 +50,8 @@ class Home extends Component {
         action: RequestAction.REQUEST_DATA,
       };
       updateSelection(0);
-      this.getDataId = setInterval(getData, 250);
-      this.requestDataId = setInterval(() => publishAction(payload, 1), 1000);
+      this.getDataId = setInterval(getData, 500);
+      this.requestDataId = setInterval(() => publishAction(payload), 1000);
     }
   }
 
@@ -71,7 +72,7 @@ class Home extends Component {
     const payload = {
       action: RequestAction.CONTROL_DC,
     };
-    publishAction(payload); // eslint-disable-line
+    publishAction(payload, 1); // eslint-disable-line
   }
 
   handleDryer = (timer) => {
@@ -81,7 +82,7 @@ class Home extends Component {
       action: RequestAction.CONTROL_DRYER,
       timer,
     };
-    publishAction(payload); // eslint-disable-line
+    publishAction(payload, 1); // eslint-disable-line
     this.setState({ dryerState: !dryerState });
     this.toggleDryerSettingDialog();
   }
@@ -216,7 +217,7 @@ class Home extends Component {
                 alignItems: 'flex-start',
               }}
             >
-              <H1><WhiteText>{temperature ? `${temperature}°` : 'N/A'}</WhiteText></H1>
+              <H1><WhiteText>{_.isNumber(temperature) ? `${temperature}°` : 'N/A'}</WhiteText></H1>
               <H6><WhiteText>{getStateName(sysState)}</WhiteText></H6>
               {dryerState ?
                 <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>

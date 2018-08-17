@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   getUserInfo: UserActions.getInfo,
   updateInfo: UserActions.updateInfo,
+  clearError: UserActions.clearError,
   logout: AuthActions.logout,
 };
 

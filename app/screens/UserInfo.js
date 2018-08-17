@@ -38,13 +38,16 @@ class UserInfo extends Component {
   }
 
   componentDidUpdate() {
-    const { navigation, isLogin, errorMsg } = this.props;
+    const {
+      navigation, isLogin, errorMsg, clearError,
+    } = this.props;
     if (!isLogin) {
       navigation.navigate('Welcome');
       return;
     }
     if (errorMsg) {
       UserInfo.alertError(errorMsg);
+      clearError();
     }
   }
 
@@ -77,7 +80,7 @@ class UserInfo extends Component {
   }
 
   validatePhone = (phone) => {
-    if (!phone.trim().length) return '';
+    if (!phone.trim().length) return 'Mobile phone cannot be empty';
     if (!phone.trim().match(/^\d{6,}$/)) {
       return 'Invalid phone number';
     }
@@ -85,7 +88,7 @@ class UserInfo extends Component {
   }
 
   validateAddress = (address) => {
-    if (!address.trim().length) return '';
+    if (!address.trim().length) return 'Address cannot be empty';
     if (!address.trim().match(/^[\d\w\p{L}\p{Nd}\s]+$/)) {
       return 'Invalid address';
     }
