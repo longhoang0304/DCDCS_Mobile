@@ -64,8 +64,8 @@ class Home extends Component {
         action: RequestAction.REQUEST_DATA,
       };
       updateSelection(0);
-      this.getDataId = setInterval(getData, 1500);
-      this.requestDataId = setInterval(() => publishAction(payload), 1500);
+      this.getDataId = setInterval(getData, 500);
+      this.requestDataId = setInterval(() => publishAction(payload), 1000);
     }
   }
 
@@ -179,6 +179,7 @@ class Home extends Component {
       // humidity,
       sysState,
       selected,
+      failedRate,
       dryingTime,
       navigation,
       productList,
@@ -233,7 +234,7 @@ class Home extends Component {
               }}
             >
               <H1><WhiteText>{_.isNumber(temperature) ? `${temperature}°` : 'N/A'}</WhiteText></H1>
-              <H6><WhiteText>{SystemState.getStateName(sysState)}</WhiteText></H6>
+              <H6><WhiteText>{failedRate < 11 ? SystemState.getStateName(sysState) : 'OFFLINE'}</WhiteText></H6>
               {sysState === SystemState.DRYER_STARTED ?
                 <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
                 Drying Time: {dryingTime}m
@@ -276,7 +277,7 @@ class Home extends Component {
                   marginVertical: 0,
                   marginBottom: 15,
                 }}
-                disabled={dryerState === 2}
+                disabled={dcState === 2}
                 disabledStyle={{
                   backgroundColor: 'rgba(180, 180, 180, 0.3)',
                 }}
