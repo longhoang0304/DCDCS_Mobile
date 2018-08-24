@@ -5,7 +5,22 @@ const PAUSED = 3;
 const DRYER_STARTED = 4;
 const UNKNOWN = 5;
 
-const getStateName = (state) => ['IDLING', 'DRYING', 'MOVING', 'PAUSED', 'DRYER ON', 'N/A'][state];
+const getStateName = (state) => {
+  if (Math.abs(state) > UNKNOWN) return 'ERROR';
+  return ['IDLING', 'DRYING', 'MOVING', 'PAUSED', 'DRYER ON', 'OFFLINE'][state];
+};
+
+const getDCMotorState = (state) => {
+  if (state === IDLING) return 0;
+  if (state === DRYING) return 1;
+  return 2;
+};
+
+const getDryerState = (state) => {
+  if (state === IDLING) return 0;
+  if (state === DRYER_STARTED) return 1;
+  return 2;
+};
 
 export {
   IDLING,
@@ -15,4 +30,6 @@ export {
   DRYER_STARTED,
   UNKNOWN,
   getStateName,
+  getDCMotorState,
+  getDryerState,
 };

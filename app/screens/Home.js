@@ -11,7 +11,7 @@ import DryerSettingDialog from '../components/Common/DryerSettingDialog';
 import LoadingDialog from '../components/Common/LoadingDialog';
 import ProductSelectDialog from '../components/Common/ProductSelectDialog';
 import * as RequestAction from '../constants/RequestActions';
-import { getStateName } from '../constants/SystemState';
+import * as SystemState from '../constants/SystemState';
 // import styles from './styles';
 
 class Home extends Component {
@@ -22,8 +22,8 @@ class Home extends Component {
       time: moment().tz('Asia/Ho_Chi_Minh').format('HH:mm:ss'),
       showDryerSettingDialog: false,
       showProductDialog: false,
-      dcState: 0,
-      dryerState: 0,
+      dcState: 2,
+      dryerState: 2,
       dryerMinute: 5,
     };
     this.getDataId = null;
@@ -44,14 +44,28 @@ class Home extends Component {
       selected,
       getData,
       publishAction,
+      sysState,
     } = this.props;
+    const {
+      dcState,
+      dryerState,
+    } = this.state;
+    const _dcState = SystemState.getDCMotorState(sysState); // eslint-disable-line
+    const _dryerState = SystemState.getDryerState(sysState); // eslint-disable-line
+
+    if (dcState !== _dcState) {
+      this.setState({ dcState: _dcState });
+    }
+    if (dryerState !== _dryerState) {
+      this.setState({ dryerState: _dryerState });
+    }
     if (selected < 0 && productList.length !== 0) {
       const payload = {
         action: RequestAction.REQUEST_DATA,
       };
       updateSelection(0);
-      this.getDataId = setInterval(getData, 500);
-      this.requestDataId = setInterval(() => publishAction(payload), 1000);
+      this.getDataId = setInterval(getData, 1500);
+      this.requestDataId = setInterval(() => publishAction(payload), 1500);
     }
   }
 
@@ -165,6 +179,7 @@ class Home extends Component {
       // humidity,
       sysState,
       selected,
+      dryingTime,
       navigation,
       productList,
       temperature,
@@ -218,10 +233,10 @@ class Home extends Component {
               }}
             >
               <H1><WhiteText>{_.isNumber(temperature) ? `${temperature}°` : 'N/A'}</WhiteText></H1>
-              <H6><WhiteText>{getStateName(sysState)}</WhiteText></H6>
-              {dryerState ?
+              <H6><WhiteText>{SystemState.getStateName(sysState)}</WhiteText></H6>
+              {sysState === SystemState.DRYER_STARTED ?
                 <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
-                Drying Time: {dryerMinute}m
+                Drying Time: {dryingTime}m
               </WhiteText>
               : null}
               <WhiteText style={{ fontSize: 24, fontWeight: 'bold' }}>
@@ -261,6 +276,10 @@ class Home extends Component {
                   marginVertical: 0,
                   marginBottom: 15,
                 }}
+                disabled={dryerState === 2}
+                disabledStyle={{
+                  backgroundColor: 'rgba(180, 180, 180, 0.3)',
+                }}
                 rounded={true}
                 title={`${dcState ? 'Collect' : 'Dry'} clothes`}
                 onPress={() => this.alertDCControl()}
@@ -271,6 +290,10 @@ class Home extends Component {
                   marginHorizontal: 0,
                   marginVertical: 0,
                   marginBottom: 15,
+                }}
+                disabled={dryerState === 2}
+                disabledStyle={{
+                  backgroundColor: 'rgba(180, 180, 180, 0.3)',
                 }}
                 rounded={true}
                 title='Dryer setting'

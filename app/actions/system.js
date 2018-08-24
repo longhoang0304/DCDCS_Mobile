@@ -139,10 +139,6 @@ const getDataFailed = (errorMsg) => ({
   type: SysTypes.SYSTEM_GET_DATA_FAILED,
   payload: {
     errorMsg,
-    temperature: null,
-    humidity: null,
-    dryingTime: null,
-    sysState: SystemState.UNKNOWN,
   },
 });
 
@@ -151,10 +147,10 @@ const getDataAction = () => async (dispatch) => {
   try {
     const res = await get(APIUrl(`actions/${Expo.Constants.deviceId}`), true);
     const json = await res.json();
-    if (res.status === 404) {
-      dispatch(getDataFailed(''));
-      return;
-    }
+    // if (res.status === 404) {
+    //   dispatch(getDataFailed(''));
+    //   return;
+    // }
     if (res.ok) {
       const { action, data } = json.payload || {};
       if (action === RequestAction.UPDATE_INFO) {
@@ -163,10 +159,10 @@ const getDataAction = () => async (dispatch) => {
       return;
     }
     dispatch(getDataFailed(json.message));
-    alertError(json.message);
+    // alertError(json.message);
   } catch (error) {
     dispatch(getDataFailed(error.message));
-    // alertError(error.message);
+    alertError(error.message);
   }
 };
 /* =================== GET DATA END ====================== */
