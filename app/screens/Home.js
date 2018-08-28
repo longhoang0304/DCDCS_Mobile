@@ -14,6 +14,8 @@ import * as RequestAction from '../constants/RequestActions';
 import * as SystemState from '../constants/SystemState';
 // import styles from './styles';
 
+const DryerButtonName = ['Dry clothes', 'Collect clothes', 'Resume', 'Pause', 'Dry clothes'];
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +69,7 @@ class Home extends Component {
       this.getDataId = setInterval(getData, 500);
       this.requestDataId = setInterval(() => publishAction(payload), 1000);
     }
+    this.mounted = true;
   }
 
   clearInterval = () => {
@@ -293,12 +296,12 @@ class Home extends Component {
                   marginVertical: 0,
                   marginBottom: 15,
                 }}
-                disabled={dcState === 2}
+                disabled={dcState === 4}
                 disabledStyle={{
                   backgroundColor: 'rgba(180, 180, 180, 0.3)',
                 }}
                 rounded={true}
-                title={`${dcState ? 'Collect' : 'Dry'} clothes`}
+                title={`${DryerButtonName[dcState]}`}
                 onPress={() => this.alertDCControl()}
               />
               <Button

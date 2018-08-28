@@ -13,7 +13,9 @@ const getStateName = (state) => {
 const getDCMotorState = (state) => {
   if (state === IDLING) return 0;
   if (state === DRYING) return 1;
-  return 2;
+  if (state === PAUSED) return 2;
+  if (state === MOVING) return 3;
+  return 4;
 };
 
 const getDryerState = (state) => {
