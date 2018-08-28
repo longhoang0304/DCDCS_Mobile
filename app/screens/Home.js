@@ -73,30 +73,46 @@ class Home extends Component {
     const { getDataId, requestDataId, timeId } = this;
     clearInterval(getDataId);
     clearInterval(requestDataId);
-    clearImmediate(timeId);
+    clearInterval(timeId);
   }
 
   componentWillUnmount() {
     this.clearInterval();
   }
 
+  static determineDCAction = (sysState) => {
+    if (sysState === SystemState.DRYING) return RequestAction.COLLECT_CLOTHES;
+    if (sysState === SystemState.IDLING) return RequestAction.DRY_CLOTHES;
+    if (sysState === SystemState.MOVING) return RequestAction.PAUSE_MOTOR;
+    if (sysState === SystemState.PAUSED) return RequestAction.RESUME_MOTOR;
+    return null;
+  }
+
+  static determineDryerAction = (sysState) => {
+    if (sysState === SystemState.IDLING) return RequestAction.START_DRYER_MOBILE;
+    if (sysState === SystemState.DRYER_STARTED) return RequestAction.STOP_DRYER;
+    return null;
+  }
+
   handleDC = (dcState) => {
-    const { publishAction } = this.props;
-    this.setState({ dcState });
+    const { publishAction, sysState } = this.props;
+    const action = Home.determineDCAction(sysState);
     const payload = {
-      action: RequestAction.CONTROL_DC,
+      action,
     };
-    publishAction(payload, 1); // eslint-disable-line
+    if (action) publishAction(payload, 1); // eslint-disable-line
+    this.setState({ dcState });
   }
 
   handleDryer = (timer) => {
-    const { publishAction } = this.props;
+    const { publishAction, sysState } = this.props;
     const { dryerState } = this.state;
+    const action = Home.determineDryerAction(sysState);
     const payload = {
-      action: RequestAction.CONTROL_DRYER,
+      action,
       timer,
     };
-    publishAction(payload, 1); // eslint-disable-line
+    if (action) publishAction(payload, 1); // eslint-disable-line
     this.setState({ dryerState: !dryerState });
     this.toggleDryerSettingDialog();
   }
