@@ -14,7 +14,7 @@ import * as RequestAction from '../constants/RequestActions';
 import * as SystemState from '../constants/SystemState';
 // import styles from './styles';
 
-const DryerButtonName = ['Dry clothes', 'Collect clothes', 'Resume', 'Pause', 'Dry clothes'];
+const DCButtonName = ['Dry clothes', 'Collect clothes', 'Resume', 'Pause', 'Dry clothes'];
 
 class Home extends Component {
   constructor(props) {
@@ -124,7 +124,7 @@ class Home extends Component {
     const { dcState } = this.state;
     Alert.alert(
       'CONFIRM',
-      `Do you want to ${dcState ? 'collect' : 'dry'} your clothes?`,
+      `Do you want to ${DCButtonName[dcState]}?`,
       [
         {
           text: 'Yes, do it',
@@ -301,7 +301,7 @@ class Home extends Component {
                   backgroundColor: 'rgba(180, 180, 180, 0.3)',
                 }}
                 rounded={true}
-                title={`${DryerButtonName[dcState]}`}
+                title={`${DCButtonName[dcState]}`}
                 onPress={() => this.alertDCControl()}
               />
               <Button
